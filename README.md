@@ -10,7 +10,7 @@ This section walks through how to train and sample from a model.
 
 Clone this repository and navigate to it in your terminal. Activate your environment. Then run:
 
-```
+```make
 make setup
 ```
 
