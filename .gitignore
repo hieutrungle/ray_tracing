@@ -1,0 +1,8 @@
+book-ray-tracing
+*cache*
+*temp*
+data/*/
+logs/*
+*tmp*
+*.tamulauncher*
+*.vscode
