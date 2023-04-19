@@ -19,6 +19,9 @@ class Canvas:
         self.height = height
         self.pixels = [[Color(0, 0, 0) for _ in range(width)] for _ in range(height)]
 
+    def __repr__(self) -> str:
+        return f"Canvas({self.width}, {self.height})"
+
     def write_pixel(self, x, y, color):
         """Write a pixel to the canvas"""
         self.pixels[y][x] = color
@@ -49,3 +52,8 @@ class Canvas:
             body += row_string + "\n"
 
         return header + body
+
+    def save_to_file(self, filename):
+        """Save the canvas to a file"""
+        with open(filename, "w") as file:
+            file.write(self.to_ppm())
