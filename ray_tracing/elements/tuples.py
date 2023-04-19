@@ -3,106 +3,86 @@ import numpy as np
 
 class Tuple:
     """
-    A tuple with 4 coordinates
+    A tuple with 4 values
     """
 
     def __init__(self, x, y, z, w):
-        self.x = x
-        self.y = y
-        self.z = z
-        self.w = w
+        self.tuple = (x, y, z, w)
 
     def __eq__(self, other):
-        return np.allclose(
-            [self.x, self.y, self.z, self.w], [other.x, other.y, other.z, other.w]
-        )
+        return np.allclose(self.tuple, other.tuple)
 
     def __add__(self, other):
-        new_tuple = Tuple(
-            self.x + other.x, self.y + other.y, self.z + other.z, self.w + other.w
-        )
-        if new_tuple.w != 1 and new_tuple.w != 0:
-            raise ValueError(
-                "Tuple addition results in a tuple with w not being 1 or 0"
-            )
-        return new_tuple
+        return Tuple(*(a + b for a, b in zip(self.tuple, other.tuple)))
 
     def __sub__(self, other):
-        new_tuple = Tuple(
-            self.x - other.x, self.y - other.y, self.z - other.z, self.w - other.w
-        )
-        if new_tuple.w != 1 and new_tuple.w != 0:
-            raise ValueError(
-                "Tuple subtraction results in a tuple with w not being 1 or 0"
-            )
-        return new_tuple
+        return Tuple(*(a - b for a, b in zip(self.tuple, other.tuple)))
 
     def __neg__(self):
-        return Tuple(-self.x, -self.y, -self.z, -self.w)
+        return Tuple(*(-a for a in self.tuple))
 
     def __mul__(self, scalar):
-        return Tuple(self.x * scalar, self.y * scalar, self.z * scalar, self.w * scalar)
+        return Tuple(*(a * scalar for a in self.tuple))
 
     def __truediv__(self, scalar):
         if scalar == 0:
             raise ZeroDivisionError
-        return Tuple(self.x / scalar, self.y / scalar, self.z / scalar, self.w / scalar)
+        return Tuple(*(a / scalar for a in self.tuple))
 
     def __abs__(self):
-        return np.sqrt(self * self)
+        return np.sqrt(sum(a * a for a in self.tuple))
 
     def __repr__(self):
-        return f"Tuple({self.x}, {self.y}, {self.z}, {self.w})"
-
-    def __str__(self):
-        return f"Tuple({self.x}, {self.y}, {self.z}, {self.w})"
-
-    # sum of all coordinates
-    def cumsum(self):
-        return self.x + self.y + self.z + self.w
-
-    def is_vector(self):
-        return self.w == 0
-
-    def is_point(self):
-        return self.w == 1
-
-    def magnitude(self):
-        return np.sqrt(
-            self.x * self.x + self.y * self.y + self.z * self.z + self.w * self.w
+        return (
+            f"Tuple({self.tuple[0]}, {self.tuple[1]}, {self.tuple[2]}, {self.tuple[3]})"
         )
 
+    def __str__(self):
+        return (
+            f"Tuple({self.tuple[0]}, {self.tuple[1]}, {self.tuple[2]}, {self.tuple[3]})"
+        )
+
+    def is_point(self):
+        return self.tuple[3] == 1
+
+    def is_vector(self):
+        return self.tuple[3] == 0
+
+    def x(self):
+        return self.tuple[0]
+
+    def y(self):
+        return self.tuple[1]
+
+    def z(self):
+        return self.tuple[2]
+
+    def w(self):
+        return self.tuple[3]
+
+    def set_tuple(self, x, y, z, w):
+        self.tuple = (x, y, z, w)
+
+    def magnitude(self):
+        return np.sqrt(sum(a * a for a in self.tuple))
+
     def normalize(self):
-        return self * (1 / self.magnitude())
+        return self / self.magnitude()
 
     def dot(self, other):
-        if isinstance(other, Tuple):
-            return (
-                self.x * other.x
-                + self.y * other.y
-                + self.z * other.z
-                + self.w * other.w
-            )
-        else:
-            raise TypeError("Can only dot a tuple with another tuple")
+        return sum(a * b for a, b in zip(self.tuple, other.tuple))
 
     def cross(self, other):
-        if self.is_vector() and other.is_vector():
-            return Vector(
-                self.y * other.z - self.z * other.y,
-                self.z * other.x - self.x * other.z,
-                self.x * other.y - self.y * other.x,
-            )
-        elif not self.is_vector():
-            raise TypeError(
-                "Can only perform the cross product on vectors. {self} is not a vector."
-            )
-        elif not other.is_vector():
-            raise TypeError(
-                "Can only perform the cross product on vectors. {other} is not a vector."
-            )
-        else:
-            raise TypeError("Can only perform the cross product on vectors.")
+        if not self.is_vector() or not other.is_vector():
+            raise ValueError("Cross product is only defined for vectors")
+        return Vector(
+            self.tuple[1] * other.tuple[2] - self.tuple[2] * other.tuple[1],
+            self.tuple[2] * other.tuple[0] - self.tuple[0] * other.tuple[2],
+            self.tuple[0] * other.tuple[1] - self.tuple[1] * other.tuple[0],
+        )
+
+    # def reflect(self, normal):
+    #     return self - normal * 2 * self.dot(normal)
 
 
 class Point(Tuple):
@@ -113,6 +93,21 @@ class Point(Tuple):
     def __init__(self, x, y, z):
         super().__init__(x, y, z, 1)
 
+    def __repr__(self):
+        return f"Point({self.tuple[0]}, {self.tuple[1]}, {self.tuple[2]})"
+
+    def __str__(self):
+        return f"Point({self.tuple[0]}, {self.tuple[1]}, {self.tuple[2]})"
+
+    # def __repr__(self):
+    #     return f"Point({self.x}, {self.y}, {self.z})"
+
+    # def __str__(self):
+    #     return f"Point({self.x}, {self.y}, {self.z})"
+
+    def set_point(self, x, y, z):
+        self.set_tuple(x, y, z, 1)
+
 
 class Vector(Tuple):
     """
@@ -122,4 +117,36 @@ class Vector(Tuple):
     def __init__(self, x, y, z):
         super().__init__(x, y, z, 0)
 
+    def __repr__(self):
+        return f"Vector({self.tuple[0]}, {self.tuple[1]}, {self.tuple[2]})"
 
+    def __str__(self):
+        return f"Vector({self.tuple[0]}, {self.tuple[1]}, {self.tuple[2]})"
+
+    def set_vector(self, x, y, z):
+        self.set_tuple(x, y, z, 0)
+
+
+class Color(Tuple):
+    """
+    A color in RGB space
+    """
+
+    def __init__(self, r, g, b, a=0):
+        super().__init__(r, g, b, a)
+
+    def __repr__(self):
+        return (
+            f"Color({self.tuple[0]}, {self.tuple[1]}, {self.tuple[2], self.tuple[3]})"
+        )
+
+    def __str__(self):
+        return (
+            f"Color({self.tuple[0]}, {self.tuple[1]}, {self.tuple[2], self.tuple[3]})"
+        )
+
+    def set_color(self, r, g, b, a=0):
+        self.set_tuple(r, g, b, a)
+
+    def hadamard_product(self, other):
+        return Color(*[a * b for a, b in zip(self.tuple, other.tuple)])
