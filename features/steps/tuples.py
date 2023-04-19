@@ -24,7 +24,15 @@ def step_impl(context, x, y, z, w):
 
 @then("a.{name} = {value}")
 def step_impl(context, name, value):
-    tuple_value = getattr(context.a, name)
+    if name == "x":
+        tuple_value = context.a.tuple[0]
+    elif name == "y":
+        tuple_value = context.a.tuple[1]
+    elif name == "z":
+        tuple_value = context.a.tuple[2]
+    elif name == "w":
+        tuple_value = context.a.tuple[3]
+    # tuple_value = getattr(context.a, name)
     assert (tuple_value - float(value)) < EPSILON
 
 
@@ -98,9 +106,8 @@ def step_impl(context, num1, num2, x, y, z, w):
     y = float(y)
     z = float(z)
     w = float(w)
-    assert getattr(context, "a" + num1) + getattr(context, "a" + num2) == tuples.Tuple(
-        x, y, z, w
-    )
+    new_tuple = getattr(context, "a" + num1) + getattr(context, "a" + num2)
+    assert new_tuple == tuples.Tuple(x, y, z, w)
 
 
 # define points and vectors
@@ -126,9 +133,8 @@ def step_impl(context, num1, num2, x, y, z):
     x = float(x)
     y = float(y)
     z = float(z)
-    assert getattr(context, "p" + num1) - getattr(context, "p" + num2) == tuples.Vector(
-        x, y, z
-    )
+    results = getattr(context, "p" + num1) - getattr(context, "p" + num2)
+    assert results == tuples.Vector(x, y, z)
 
 
 # subtracting vector from a point
@@ -137,7 +143,8 @@ def step_impl(context, x, y, z):
     x = float(x)
     y = float(y)
     z = float(z)
-    assert getattr(context, "p") - getattr(context, "v") == tuples.Point(x, y, z)
+    results = getattr(context, "p") - getattr(context, "v")
+    assert results == tuples.Point(x, y, z)
 
 
 # subtracting two vectors
@@ -146,9 +153,8 @@ def step_impl(context, num1, num2, x, y, z):
     x = float(x)
     y = float(y)
     z = float(z)
-    assert getattr(context, "v" + num1) - getattr(context, "v" + num2) == tuples.Vector(
-        x, y, z
-    )
+    results = getattr(context, "v" + num1) - getattr(context, "v" + num2)
+    assert results == tuples.Vector(x, y, z)
 
 
 # negate a tuple
@@ -158,7 +164,8 @@ def step_impl(context, x, y, z, w):
     y = float(y)
     z = float(z)
     w = float(w)
-    assert -getattr(context, "a") == tuples.Tuple(x, y, z, w)
+    results = -getattr(context, "a")
+    assert results == tuples.Tuple(x, y, z, w)
 
 
 # multiply a tuple by a scalar
@@ -169,14 +176,16 @@ def step_impl(context, scalar, x, y, z, w):
     z = float(z)
     w = float(w)
     scalar = float(scalar)
-    assert getattr(context, "a") * scalar == tuples.Tuple(x, y, z, w)
+    results = getattr(context, "a") * scalar
+    assert results == tuples.Tuple(x, y, z, w)
 
 
 # magnitude
 @then("magnitude(v) = {magnitude}")
 def step_impl(context, magnitude):
     magnitude = float(magnitude)
-    assert operations.equal((getattr(context, "v")).magnitude(), magnitude)
+    results = getattr(context, "v").magnitude()
+    assert operations.equal(results, magnitude)
 
 
 # normalize
@@ -185,7 +194,8 @@ def step_impl(context, x, y, z):
     x = float(x)
     y = float(y)
     z = float(z)
-    assert getattr(context, "v").normalize() == tuples.Vector(x, y, z)
+    results = getattr(context, "v").normalize()
+    assert results == tuples.Vector(x, y, z)
 
 
 @when("norm ← normalize(v)")
@@ -202,10 +212,8 @@ def step_impl(context):
 @then("dot(v{num1}, v{num2}) = {dot_product}")
 def step_impl(context, num1, num2, dot_product):
     dot_product = float(dot_product)
-    assert operations.equal(
-        getattr(context, "v" + num1).dot(getattr(context, "v" + num2)),
-        dot_product,
-    )
+    results = getattr(context, "v" + num1).dot(getattr(context, "v" + num2))
+    assert operations.equal(results, dot_product)
 
 
 # cross product
@@ -214,6 +222,79 @@ def step_impl(context, num1, num2, x, y, z):
     x = float(x)
     y = float(y)
     z = float(z)
-    assert getattr(context, "v" + num1).cross(
-        getattr(context, "v" + num2)
-    ) == tuples.Vector(x, y, z)
+    new_vector = getattr(context, "v" + num1).cross(getattr(context, "v" + num2))
+    assert new_vector == tuples.Vector(x, y, z)
+
+
+# color
+@given("c ← color({r}, {g}, {b})")
+def step_impl(context, r, g, b):
+    r = float(r)
+    g = float(g)
+    b = float(b)
+    context.c = tuples.Color(r, g, b)
+
+
+@given("c{num} ← color({x}, {y}, {z})")
+def step_impl(context, num, x, y, z):
+    x = float(x)
+    y = float(y)
+    z = float(z)
+    setattr(context, "c" + num, tuples.Color(x, y, z))
+
+
+# Representing color
+@then("c.{name} = {value}")
+def step_impl(context, name, value):
+    if name == "r":
+        tuple_value = context.c.tuple[0]
+    elif name == "g":
+        tuple_value = context.c.tuple[1]
+    elif name == "b":
+        tuple_value = context.c.tuple[2]
+    elif name == "a":
+        tuple_value = context.c.tuple[3]
+    assert (tuple_value - float(value)) < EPSILON
+
+
+# Adding colors
+@then("c{num1} + c{num2} = color({r}, {g}, {b})")
+def step_impl(context, num1, num2, r, g, b):
+    r = float(r)
+    g = float(g)
+    b = float(b)
+    results = getattr(context, "c" + num1) + getattr(context, "c" + num2)
+    assert results == tuples.Color(r, g, b)
+
+
+# Subtracting colors
+@then("c{num1} - c{num2} = color({r}, {g}, {b})")
+def step_impl(context, num1, num2, r, g, b):
+    r = float(r)
+    g = float(g)
+    b = float(b)
+    results = getattr(context, "c" + num1) - getattr(context, "c" + num2)
+    assert results == tuples.Color(r, g, b)
+
+
+# Multiplying a color by a scalar
+@then("c * {scalar} = color({r}, {g}, {b})")
+def step_impl(context, scalar, r, g, b):
+    r = float(r)
+    g = float(g)
+    b = float(b)
+    scalar = float(scalar)
+    results = getattr(context, "c") * scalar
+    assert results == tuples.Color(r, g, b)
+
+
+# Multiplying colors
+@then("c{num1} * c{num2} = color({r}, {g}, {b})")
+def step_impl(context, num1, num2, r, g, b):
+    r = float(r)
+    g = float(g)
+    b = float(b)
+    results = getattr(context, "c" + num1).hadamard_product(
+        getattr(context, "c" + num2)
+    )
+    assert results == tuples.Color(r, g, b)
