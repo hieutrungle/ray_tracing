@@ -10,6 +10,9 @@ test_tuples:
 test_canvas:
 	behave -i ./features/canvas.feature
 
+test_matrices:
+	behave -i ./features/matrices.feature
+
 clean:
 	rm -rf __pycache__
 
