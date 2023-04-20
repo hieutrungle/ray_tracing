@@ -48,18 +48,6 @@ class Tuple:
     def is_vector(self):
         return self.tuple[3] == 0
 
-    def x(self):
-        return self.tuple[0]
-
-    def y(self):
-        return self.tuple[1]
-
-    def z(self):
-        return self.tuple[2]
-
-    def w(self):
-        return self.tuple[3]
-
     def set_tuple(self, x, y, z, w):
         self.tuple = (x, y, z, w)
 
@@ -99,11 +87,28 @@ class Point(Tuple):
     def __str__(self):
         return f"Point({self.tuple[0]}, {self.tuple[1]}, {self.tuple[2]})"
 
-    # def __repr__(self):
-    #     return f"Point({self.x}, {self.y}, {self.z})"
+    def __add__(self, other):
+        results = super().__add__(other)
+        return Point(results.tuple[0], results.tuple[1], results.tuple[2])
 
-    # def __str__(self):
-    #     return f"Point({self.x}, {self.y}, {self.z})"
+    def __sub__(self, other):
+        results = super().__sub__(other)
+        if isinstance(other, Point):
+            return Vector(results.tuple[0], results.tuple[1], results.tuple[2])
+        elif isinstance(other, Vector):
+            return Point(results.tuple[0], results.tuple[1], results.tuple[2])
+
+    def x(self):
+        return self.tuple[0]
+
+    def y(self):
+        return self.tuple[1]
+
+    def z(self):
+        return self.tuple[2]
+
+    def w(self):
+        return 1
 
     def set_point(self, x, y, z):
         self.set_tuple(x, y, z, 1)
@@ -122,6 +127,25 @@ class Vector(Tuple):
 
     def __str__(self):
         return f"Vector({self.tuple[0]}, {self.tuple[1]}, {self.tuple[2]})"
+
+    def __add__(self, other):
+        results = super().__add__(other)
+        if not isinstance(other, Vector):
+            return Vector(results.tuple[0], results.tuple[1], results.tuple[2])
+        elif isinstance(other, Point):
+            return Point(results.tuple[0], results.tuple[1], results.tuple[2])
+
+    def x(self):
+        return self.tuple[0]
+
+    def y(self):
+        return self.tuple[1]
+
+    def z(self):
+        return self.tuple[2]
+
+    def w(self):
+        return 0
 
     def set_vector(self, x, y, z):
         self.set_tuple(x, y, z, 0)
@@ -144,6 +168,18 @@ class Color(Tuple):
         return (
             f"Color({self.tuple[0]}, {self.tuple[1]}, {self.tuple[2], self.tuple[3]})"
         )
+
+    def r(self):
+        return self.tuple[0]
+
+    def g(self):
+        return self.tuple[1]
+
+    def b(self):
+        return self.tuple[2]
+
+    def a(self):
+        return self.tuple[3]
 
     def set_color(self, r, g, b, a=0):
         self.set_tuple(r, g, b, a)
