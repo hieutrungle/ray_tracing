@@ -5,7 +5,8 @@ package_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, package_path)
 
 import ray_tracing
-from ray_tracing.elements.tuples import Point, Vector
+from ray_tracing.elements.tuples import Point, Vector, Color
+from ray_tracing.elements.canvas import Canvas
 
 
 class Projectile:
@@ -35,10 +36,25 @@ class Environment:
         self.wind = wind
 
 
-if __name__ == "__main__":
-    p = Projectile(Point(0, 1, 0), Vector(1, 1, 0).normalize())
-    env = Environment(Vector(0, -0.1, 0), Vector(-0.01, 0, 0))
-    print(p)
-    for i in range(10):
+def main():
+    canvas = Canvas(900, 550)
+    start = Point(102.312, 60.3123, 0)
+    velocity = Vector(1, 1.8, 0).normalize() * 11.25
+    p = Projectile(start, velocity)
+
+    gravity = Vector(0, -0.1, 0)
+    wind = Vector(-0.01, 0, 0)
+    env = Environment(gravity, wind)
+
+    red = Color(1, 0, 0)
+    while p.position.y() > 0:
+        x = int(p.position.x())
+        y = canvas.height - int(p.position.y())
+        canvas.write_pixel(x, y, red)
         p.tick(env)
-        print(p)
+
+    canvas.save_to_file("./projectile.ppm")
+
+
+if __name__ == "__main__":
+    main()
