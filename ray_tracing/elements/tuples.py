@@ -9,6 +9,14 @@ class Tuple:
     def __init__(self, x, y, z, w):
         self.tuple = (x, y, z, w)
 
+    def __getitem__(self, index):
+        return self.tuple[index]
+
+    def __setitem__(self, index, value):
+        self.tuple = list(self.tuple)
+        self.tuple[index] = value
+        self.tuple = tuple(self.tuple)
+
     def __eq__(self, other):
         return np.allclose(self.tuple, other.tuple)
 

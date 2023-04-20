@@ -91,13 +91,13 @@ def step_impl(context, x, y, z):
 
 
 # adding tuples
-@given("a{num} ← tuple({x}, {y}, {z}, {w})")
-def step_impl(context, num, x, y, z, w):
+@given("{name} ← tuple({x}, {y}, {z}, {w})")
+def step_impl(context, name, x, y, z, w):
     x = float(x)
     y = float(y)
     z = float(z)
     w = float(w)
-    setattr(context, "a" + num, tuples.Tuple(x, y, z, w))
+    setattr(context, name, tuples.Tuple(x, y, z, w))
 
 
 @then("a{num1} + a{num2} = tuple({x}, {y}, {z}, {w})")
@@ -111,20 +111,20 @@ def step_impl(context, num1, num2, x, y, z, w):
 
 
 # define points and vectors
-@given("p{num1} ← point({x1}, {y1}, {z1})")
-def step_impl(context, num1, x1, y1, z1):
-    x1 = float(x1)
-    y1 = float(y1)
-    z1 = float(z1)
-    setattr(context, "p" + num1, tuples.Point(x1, y1, z1))
+@given("{name} ← point({x}, {y}, {z})")
+def step_impl(context, name, x, y, z):
+    x = float(x)
+    y = float(y)
+    z = float(z)
+    setattr(context, name, tuples.Point(x, y, z))
 
 
-@given("v{num1} ← vector({x1}, {y1}, {z1})")
-def step_impl(context, num1, x1, y1, z1):
-    x1 = float(x1)
-    y1 = float(y1)
-    z1 = float(z1)
-    setattr(context, "v" + num1, tuples.Vector(x1, y1, z1))
+@given("{name} ← vector({x}, {y}, {z})")
+def step_impl(context, name, x, y, z):
+    x = float(x)
+    y = float(y)
+    z = float(z)
+    setattr(context, name, tuples.Vector(x, y, z))
 
 
 # subtracting points

@@ -1,8 +1,9 @@
-def matrix_from_list(table):
+def matrix_text2list(table_headings, table_rows):
     """
-    Converts a string of text to a matrix.
+    Converts a string of text to a list.
     """
-    matrix = []
-    for row in table:
-        matrix.append([float(element) for element in row])
-    return matrix
+    matrix_list = []
+    matrix_list.append([float(element) for element in table_headings])
+    for row in table_rows:
+        matrix_list.append([float(element) for element in row])
+    return matrix_list
