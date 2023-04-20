@@ -8,7 +8,6 @@ sys.path.insert(0, package_path)
 
 import ray_tracing.elements.canvas as canvas
 from ray_tracing.utils.constants import *
-import ray_tracing.utils.operations as operations
 from behave import given, when, then
 
 

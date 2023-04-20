@@ -8,7 +8,7 @@ package_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, package_path)
 
 from ray_tracing.elements.tuples import Color
-from ray_tracing.utils import operations
+import ray_tracing.utils.utils as utils
 
 
 class Canvas:
@@ -43,7 +43,7 @@ class Canvas:
                         break
 
                     value = int(value * 256)
-                    value = operations.clamp(value, 0, 255)
+                    value = utils.clamp(value, 0, 255)
                     row_string += f"{value} "
                     if len(row_string) > 70 - 3:
                         row_string = row_string[:-1]

@@ -10,7 +10,7 @@ sys.path.insert(0, package_path)
 
 import numpy as np
 import ray_tracing.elements.tuples as tuples
-import ray_tracing.utils.operations as operations
+import ray_tracing.utils.utils as utils
 
 
 class Matrix:
@@ -43,7 +43,7 @@ class Matrix:
             return False
         for i in range(self.rows):
             for j in range(self.columns):
-                if not operations.equal(self.matrix[i][j], other.matrix[i][j]):
+                if not utils.equal(self.matrix[i][j], other.matrix[i][j]):
                     return False
         return True
 

@@ -1,3 +1,18 @@
+import math
+from .constants import *
+
+
+def equal(a, b):
+    if abs(a - b) < EPSILON:
+        return True
+    else:
+        return False
+
+
+def clamp(value, min_value, max_value):
+    return max(min(value, max_value), min_value)
+
+
 def matrix_text2list(table_headings, table_rows):
     """
     Converts a string of text to a list.

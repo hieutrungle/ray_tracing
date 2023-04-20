@@ -8,7 +8,7 @@ sys.path.insert(0, package_path)
 
 import ray_tracing.elements.tuples as tuples
 from ray_tracing.utils.constants import *
-import ray_tracing.utils.operations as operations
+import ray_tracing.utils.utils as utils
 from behave import given, when, then
 
 
@@ -185,7 +185,7 @@ def step_impl(context, scalar, x, y, z, w):
 def step_impl(context, magnitude):
     magnitude = float(magnitude)
     results = getattr(context, "v").magnitude()
-    assert operations.equal(results, magnitude)
+    assert utils.equal(results, magnitude)
 
 
 # normalize
@@ -205,7 +205,7 @@ def step_impl(context):
 
 @then("magnitude(norm) = 1")
 def step_impl(context):
-    assert operations.equal((context.norm).magnitude(), 1)
+    assert utils.equal((context.norm).magnitude(), 1)
 
 
 # dot product
@@ -213,7 +213,7 @@ def step_impl(context):
 def step_impl(context, num1, num2, dot_product):
     dot_product = float(dot_product)
     results = getattr(context, "v" + num1).dot(getattr(context, "v" + num2))
-    assert operations.equal(results, dot_product)
+    assert utils.equal(results, dot_product)
 
 
 # cross product
