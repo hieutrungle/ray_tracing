@@ -195,7 +195,7 @@ Feature: Matrices and Determinants
             | 1  | -5 | 1  | 8  |
             | 7  | 7  | -6 | -7 |
             | 1  | -3 | 7  | 4  |
-        And B ← inverse(A)
+        And matrix B ← inverse(A)
         Then determinant(A) = 532
         And cofactor(A, 2, 3) = -160
         And B[3,2] = -0.30075
@@ -242,3 +242,26 @@ Feature: Matrices and Determinants
             | 6 | -2 | 0 | 5 |
         And matrix C ← matrix A * matrix B
         Then matrix C * matrix inverse(B) = matrix A
+
+    Scenario: Inverse an identity matrix
+        Given matrix A ← inverse(identity_matrix)
+        Then A = identity_matrix
+
+    Scenario: Multiplying a matrix by its inverse
+        Given the following 4x4 matrix A:
+            | 3  | -9 | 7  | 3  |
+            | 3  | -8 | 2  | -9 |
+            | -4 | 4  | 4  | 1  |
+            | -6 | 5  | -1 | 1  |
+        When matrix C ← matrix A * matrix inverse(A)
+        Then C = identity_matrix
+
+    Scenario: Inverse of transpose and transpose of inverse are the same
+        Given the following 4x4 matrix A:
+            | 12 | 1 | 1  | 7 |
+            | 7  | 2 | 4  | 9 |
+            | 4  | 2 | 8  | 3 |
+            | 5  | 8 | 16 | 7 |
+        When matrix B ← transpose(inverse(A))
+        And matrix C ← inverse(transpose(A))
+        Then matrix B == C

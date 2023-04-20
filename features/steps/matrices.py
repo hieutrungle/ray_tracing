@@ -149,10 +149,13 @@ def step_impl(context, name):
 
 
 # inverse of matrix
-@given("{name} ← inverse({name1})")
-def step_impl(context, name, name1):
-    m = getattr(context, name1).inverse().round_matrix(5)
-    setattr(context, name, m)
+@given("matrix {name1} ← inverse({name2})")
+def step_impl(context, name1, name2):
+    if name2 == "identity_matrix":
+        setattr(context, name1, matrix.IdentityMatrix(4).inverse())
+    else:
+        m = getattr(context, name2).inverse().round_matrix(5)
+        setattr(context, name1, m)
 
 
 @then("matrix {name} is the following 4x4 matrix")
@@ -182,3 +185,23 @@ def step_impl(context, name1, name2, name3):
 def step_impl(context, name1, name2, name3):
     m = getattr(context, name1) * getattr(context, name2).inverse()
     assert m.round_matrix(5) == getattr(context, name3).round_matrix(5)
+
+
+# inverse identity matrix
+@when("matrix {name1} ← matrix {name2} * matrix inverse({name2})")
+def step_impl(context, name1, name2):
+    m = getattr(context, name2) * getattr(context, name2).inverse()
+    setattr(context, name1, m)
+
+
+# Inverse of transpose and transpose of inverse
+@when("matrix {name1} ← transpose(inverse({name2}))")
+def step_impl(context, name1, name2):
+    m = getattr(context, name2).inverse().transpose().round_matrix(5)
+    setattr(context, name1, m)
+
+
+@when("matrix {name1} ← inverse(transpose({name2}))")
+def step_impl(context, name1, name2):
+    m = getattr(context, name2).transpose().inverse().round_matrix(5)
+    setattr(context, name1, m)
