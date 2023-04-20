@@ -24,7 +24,8 @@ class Canvas:
 
     def write_pixel(self, x, y, color):
         """Write a pixel to the canvas"""
-        self.pixels[y][x] = color
+        if x >= 0 and x < self.width and y >= 0 and y < self.height:
+            self.pixels[y][x] = color
 
     def pixel_at(self, x, y):
         """Get the color of a pixel"""
