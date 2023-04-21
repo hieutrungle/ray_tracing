@@ -58,6 +58,10 @@ class Matrix:
             results = self.scalar_multiplication(other)
         elif isinstance(other, tuples.Tuple):
             results = self.tuple_multiplication(other)
+            if results.is_point():
+                results = tuples.Point(results[0], results[1], results[2])
+            elif results.is_vector():
+                results = tuples.Vector(results[0], results[1], results[2])
         return results
 
     def matrix_multiplication(self, other):
@@ -285,32 +289,22 @@ class RotationZMatrix(Matrix):
 
 
 class RotationMatrix(Matrix):
-    def __init__(self, x, y, z, angle):
-        sin = math.sin(angle)
-        cos = math.cos(angle)
-        super().__init__(
-            [
-                [
-                    x * x * (1 - cos) + cos,
-                    x * y * (1 - cos) - z * sin,
-                    x * z * (1 - cos) + y * sin,
-                    0,
-                ],
-                [
-                    y * x * (1 - cos) + z * sin,
-                    y * y * (1 - cos) + cos,
-                    y * z * (1 - cos) - x * sin,
-                    0,
-                ],
-                [
-                    x * z * (1 - cos) - y * sin,
-                    y * z * (1 - cos) + x * sin,
-                    z * z * (1 - cos) + cos,
-                    0,
-                ],
-                [0, 0, 0, 1],
-            ]
-        )
+    def __init__(self, angle_x, angle_y, angle_z, order="xyz"):
+        x_rotation = RotationXMatrix(angle_x)
+        y_rotation = RotationYMatrix(angle_y)
+        z_rotation = RotationZMatrix(angle_z)
+        if order == "xyz":
+            super().__init__(z_rotation * y_rotation * x_rotation)
+        elif order == "xzy":
+            super().__init__(y_rotation * z_rotation * x_rotation)
+        elif order == "yxz":
+            super().__init__(z_rotation * x_rotation * y_rotation)
+        elif order == "yzx":
+            super().__init__(x_rotation * z_rotation * y_rotation)
+        elif order == "zxy":
+            super().__init__(y_rotation * x_rotation * z_rotation)
+        elif order == "zyx":
+            super().__init__(x_rotation * y_rotation * z_rotation)
 
 
 class ShearingMatrix(Matrix):
