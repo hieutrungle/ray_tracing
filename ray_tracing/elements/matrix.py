@@ -9,6 +9,7 @@ package_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, package_path)
 
 import numpy as np
+import math
 import ray_tracing.elements.tuples as tuples
 import ray_tracing.utils.utils as utils
 
@@ -244,3 +245,81 @@ class IdentityMatrix(Matrix):
                     row.append(0)
             entry_list.append(row)
         super().__init__(entry_list)
+
+
+class TranslationMatrix(Matrix):
+    def __init__(self, x, y, z):
+        super().__init__([[1, 0, 0, x], [0, 1, 0, y], [0, 0, 1, z], [0, 0, 0, 1]])
+
+
+class ScalingMatrix(Matrix):
+    def __init__(self, x, y, z):
+        super().__init__([[x, 0, 0, 0], [0, y, 0, 0], [0, 0, z, 0], [0, 0, 0, 1]])
+
+
+class RotationXMatrix(Matrix):
+    def __init__(self, angle):
+        sin = math.sin(angle)
+        cos = math.cos(angle)
+        super().__init__(
+            [[1, 0, 0, 0], [0, cos, -sin, 0], [0, sin, cos, 0], [0, 0, 0, 1]]
+        )
+
+
+class RotationYMatrix(Matrix):
+    def __init__(self, angle):
+        sin = math.sin(angle)
+        cos = math.cos(angle)
+        super().__init__(
+            [[cos, 0, sin, 0], [0, 1, 0, 0], [-sin, 0, cos, 0], [0, 0, 0, 1]]
+        )
+
+
+class RotationZMatrix(Matrix):
+    def __init__(self, angle):
+        sin = math.sin(angle)
+        cos = math.cos(angle)
+        super().__init__(
+            [[cos, -sin, 0, 0], [sin, cos, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+        )
+
+
+class RotationMatrix(Matrix):
+    def __init__(self, x, y, z, angle):
+        sin = math.sin(angle)
+        cos = math.cos(angle)
+        super().__init__(
+            [
+                [
+                    x * x * (1 - cos) + cos,
+                    x * y * (1 - cos) - z * sin,
+                    x * z * (1 - cos) + y * sin,
+                    0,
+                ],
+                [
+                    y * x * (1 - cos) + z * sin,
+                    y * y * (1 - cos) + cos,
+                    y * z * (1 - cos) - x * sin,
+                    0,
+                ],
+                [
+                    x * z * (1 - cos) - y * sin,
+                    y * z * (1 - cos) + x * sin,
+                    z * z * (1 - cos) + cos,
+                    0,
+                ],
+                [0, 0, 0, 1],
+            ]
+        )
+
+
+class ShearingMatrix(Matrix):
+    def __init__(self, xy, xz, yx, yz, zx, zy):
+        super().__init__(
+            [
+                [1, xy, xz, 0],
+                [yx, 1, yz, 0],
+                [zx, zy, 1, 0],
+                [0, 0, 0, 1],
+            ]
+        )

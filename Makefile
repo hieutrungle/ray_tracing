@@ -13,6 +13,9 @@ test_canvas:
 test_matrices:
 	behave -i ./features/matrices.feature
 
+test_trans:
+	behave -i ./features/transformations.feature
+
 clean:
 	rm -rf __pycache__
 
