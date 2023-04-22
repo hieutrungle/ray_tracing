@@ -1,1 +1,2 @@
 EPSILON = 1e-6
+OBJECT_COUNT = 0

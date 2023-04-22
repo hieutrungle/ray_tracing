@@ -16,6 +16,9 @@ test_matrices:
 test_trans:
 	behave -i ./features/transformations.feature
 
+test_rays:
+	behave -i ./features/rays.feature
+
 clean:
 	rm -rf __pycache__
 

@@ -25,13 +25,13 @@ def step_impl(context, x, y, z, w):
 @then("a.{name} = {value}")
 def step_impl(context, name, value):
     if name == "x":
-        tuple_value = context.a.tuple[0]
+        tuple_value = context.a[0]
     elif name == "y":
-        tuple_value = context.a.tuple[1]
+        tuple_value = context.a[1]
     elif name == "z":
-        tuple_value = context.a.tuple[2]
+        tuple_value = context.a[2]
     elif name == "w":
-        tuple_value = context.a.tuple[3]
+        tuple_value = context.a[3]
     # tuple_value = getattr(context.a, name)
     assert (tuple_value - float(value)) < EPSILON
 
@@ -247,13 +247,13 @@ def step_impl(context, num, x, y, z):
 @then("c.{name} = {value}")
 def step_impl(context, name, value):
     if name == "r":
-        tuple_value = context.c.tuple[0]
+        tuple_value = context.c[0]
     elif name == "g":
-        tuple_value = context.c.tuple[1]
+        tuple_value = context.c[1]
     elif name == "b":
-        tuple_value = context.c.tuple[2]
+        tuple_value = context.c[2]
     elif name == "a":
-        tuple_value = context.c.tuple[3]
+        tuple_value = context.c[3]
     assert (tuple_value - float(value)) < EPSILON
 
 

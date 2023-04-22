@@ -109,7 +109,8 @@ class Matrix:
         """
 
         # np implementation
-        tuple_in_matrix_form = np.array(other.tuple)[np.newaxis].T
+        tuple_in_matrix_form = [element for element in other]
+        tuple_in_matrix_form = np.array(tuple_in_matrix_form)[np.newaxis].T
         results = np.array(self.matrix) @ tuple_in_matrix_form
         results = results.T.tolist()[0]
 

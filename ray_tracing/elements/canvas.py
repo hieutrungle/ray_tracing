@@ -38,7 +38,7 @@ class Canvas:
         for row in self.pixels:
             row_string = ""
             for pixel in row:
-                for i, value in enumerate(pixel.tuple):
+                for i, value in enumerate(pixel):
                     if i == 3:
                         break
 
