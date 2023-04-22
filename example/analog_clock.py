@@ -14,13 +14,13 @@ from ray_tracing.elements import matrix
 def main():
     can_width = 900
     canvas = Canvas(can_width, can_width)
-    canter_point = Point(can_width / 2, can_width / 2, 0)
+    center_point = Point(can_width / 2, can_width / 2, 0)
     radius = 3 / 8 * can_width
     red = Color(0.7, 0.3, 0.5)
     start_pos = Point(0, 1, 0)
     rotation = matrix.RotationZMatrix(math.pi / 6)
     scaling = matrix.ScalingMatrix(radius, radius, 1)
-    translation = matrix.TranslationMatrix(canter_point.x(), canter_point.y(), 0)
+    translation = matrix.TranslationMatrix(center_point.x(), center_point.y(), 0)
     for i in range(12):
         rotation = matrix.RotationZMatrix(i * math.pi / 6)
         pos = translation * scaling * rotation * start_pos
