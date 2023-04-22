@@ -22,6 +22,12 @@ class Canvas:
     def __repr__(self) -> str:
         return f"Canvas({self.width}, {self.height})"
 
+    def set_background(self, color):
+        """Set the background color of the canvas"""
+        for row in self.pixels:
+            for i in range(len(row)):
+                row[i] = color
+
     def write_pixel(self, x, y, color):
         """Write a pixel to the canvas"""
         if x >= 0 and x < self.width and y >= 0 and y < self.height:
