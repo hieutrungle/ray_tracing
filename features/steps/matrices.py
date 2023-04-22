@@ -99,7 +99,7 @@ def step_impl(context, name):
     setattr(context, name, m.transpose())
 
 
-@then("{name} = identity_matrix")
+@then("matrix {name} = identity_matrix")
 def step_impl(context, name):
     m = matrix.IdentityMatrix(4)
     assert getattr(context, name) == m

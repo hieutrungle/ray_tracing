@@ -49,3 +49,24 @@ def step_impl(context, xs, index, s):
     index = int(index)
     s = getattr(context, s)
     assert xs[index].shape_object == s
+
+
+# transformation
+@then("sphere {s}.transform = identity_matrix")
+def step_impl(context, s):
+    s = getattr(context, s)
+    assert s.transform == matrix.IdentityMatrix(4)
+
+
+@when("set_transform({s}, {m})")
+def step_impl(context, s, m):
+    s = getattr(context, s)
+    m = getattr(context, m)
+    s.set_transform(m)
+
+
+@then("sphere {s}.transform = {m}")
+def step_impl(context, s, m):
+    s = getattr(context, s)
+    m = getattr(context, m)
+    assert s.transform == m

@@ -50,3 +50,29 @@ def step_impl(context, name, t, x, y, z):
     y = float(y)
     z = float(z)
     assert ray.position(t) == tuples.Point(x, y, z)
+
+
+# ray transformation
+@when("ray {name2} ← transform({name1}, {m})")
+def step_impl(context, name1, name2, m):
+    ray = getattr(context, name1)
+    matrix = getattr(context, m)
+    setattr(context, name2, ray.transform(matrix))
+
+
+@then("ray {name1}.origin = point({x1}, {y1}, {z1})")
+def step_impl(context, name1, x1, y1, z1):
+    ray = getattr(context, name1)
+    x1 = float(x1)
+    y1 = float(y1)
+    z1 = float(z1)
+    assert ray.origin == tuples.Point(x1, y1, z1)
+
+
+@then("ray {name1}.direction = vector({x1}, {y1}, {z1})")
+def step_impl(context, name1, x1, y1, z1):
+    ray = getattr(context, name1)
+    x1 = float(x1)
+    y1 = float(y1)
+    z1 = float(z1)
+    assert ray.direction == tuples.Vector(x1, y1, z1)

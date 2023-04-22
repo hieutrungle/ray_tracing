@@ -106,7 +106,7 @@ Feature: Matrices and Determinants
             | 0 | 8 | 3 | 8 |
     Scenario: Transposing the identity matrix
         Given A ← transpose(identity_matrix)
-        Then A = identity_matrix
+        Then matrix A = identity_matrix
 
     Scenario: Calculating the determinant of a 2x2 matrix
         Given the following 2x2 matrix A:
@@ -245,7 +245,7 @@ Feature: Matrices and Determinants
 
     Scenario: Inverse an identity matrix
         Given matrix A ← inverse(identity_matrix)
-        Then A = identity_matrix
+        Then matrix A = identity_matrix
 
     Scenario: Multiplying a matrix by its inverse
         Given the following 4x4 matrix A:
@@ -254,7 +254,7 @@ Feature: Matrices and Determinants
             | -4 | 4  | 4  | 1  |
             | -6 | 5  | -1 | 1  |
         When matrix C ← matrix A * matrix inverse(A)
-        Then C = identity_matrix
+        Then matrix C = identity_matrix
 
     Scenario: Inverse of transpose and transpose of inverse are the same
         Given the following 4x4 matrix A:

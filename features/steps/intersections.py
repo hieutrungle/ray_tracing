@@ -7,7 +7,7 @@ package_path = os.path.abspath(os.path.join(package_path, ".."))
 sys.path.insert(0, package_path)
 
 import ray_tracing.elements.shape as shape
-import ray_tracing.elements.matrix as matrix
+import ray_tracing.operations.intersection as intersection
 import ray_tracing.elements.tuples as tuples
 import ray_tracing.elements.ray as ray
 from ray_tracing.utils.constants import *
@@ -20,7 +20,7 @@ from behave import given, when, then
 def step_impl(context, i, t, s):
     t = float(t)
     s = getattr(context, s)
-    setattr(context, i, shape.Intersection(t, s))
+    setattr(context, i, intersection.Intersection(t, s))
 
 
 @then("intersection {i}.t = {value}")
@@ -44,14 +44,30 @@ def step_impl(context, i, given_object):
 def step_impl(context, i, t, s):
     t = float(t)
     s = getattr(context, s)
-    setattr(context, i, shape.Intersection(t, s))
+    setattr(context, i, intersection.Intersection(t, s))
 
 
-@when("intersections xs ← intersections({i1}, {i2})")
-def step_impl(context, i1, i2):
+@given("intersections {xs} ← 2 intersections({i1}, {i2})")
+def step_impl(context, xs, i1, i2):
     i1 = getattr(context, i1)
     i2 = getattr(context, i2)
-    context.xs = shape.Intersections(i1, i2)
+    setattr(context, xs, intersection.Intersections(i1, i2))
+
+
+@given("intersections {xs} ← 4 intersections({i1}, {i2}, {i3}, {i4})")
+def step_impl(context, xs, i1, i2, i3, i4):
+    i1 = getattr(context, i1)
+    i2 = getattr(context, i2)
+    i3 = getattr(context, i3)
+    i4 = getattr(context, i4)
+    setattr(context, xs, intersection.Intersections(i1, i2, i3, i4))
+
+
+@when("intersections {xs} ← 2 intersections({i1}, {i2})")
+def step_impl(context, xs, i1, i2):
+    i1 = getattr(context, i1)
+    i2 = getattr(context, i2)
+    setattr(context, xs, intersection.Intersections(i1, i2))
 
 
 @then("intersections {xs}.count = {count}")
@@ -67,3 +83,23 @@ def step_impl(context, xs, index, t):
     index = int(index)
     t = float(t)
     assert xs[index].t == t
+
+
+# hit
+@when("intersection {i} ← hit({xs})")
+def step_impl(context, i, xs):
+    xs = getattr(context, xs)
+    setattr(context, i, xs.hit())
+
+
+@then("intersection {i} = {given_intersection}")
+def step_impl(context, i, given_intersection):
+    i = getattr(context, i)
+    given_intersection = getattr(context, given_intersection)
+    assert i == given_intersection
+
+
+@then("intersection {i} is Nothing")
+def step_impl(context, i):
+    i = getattr(context, i)
+    assert i is None

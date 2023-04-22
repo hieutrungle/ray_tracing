@@ -239,7 +239,7 @@ class IdentityMatrix(Matrix):
     Identity matrix.
     """
 
-    def __init__(self, size):
+    def __init__(self, size=4):
         entry_list = []
         for i in range(size):
             row = []
