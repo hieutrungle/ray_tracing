@@ -83,9 +83,3 @@ class Ray:
         :rtype: str
         """
         return f"Ray(origin={self.origin}, direction={self.direction})"
-
-    def local_intersect(self, ray):
-        """
-        Intersects the sphere with the given ray.
-        """
-        

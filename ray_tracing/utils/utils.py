@@ -22,3 +22,12 @@ def matrix_text2list(table_headings, table_rows):
     for row in table_rows:
         matrix_list.append([float(element) for element in row])
     return matrix_list
+
+
+def generate_uuid():
+    """
+    Generates a unique id.
+    """
+    global OBJECT_COUNT
+    OBJECT_COUNT += 1
+    return OBJECT_COUNT

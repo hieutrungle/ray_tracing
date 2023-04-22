@@ -1,5 +1,5 @@
 """
-This module contains the Shape class.
+This module contains the ShapeObject class.
 """
 
 import os
@@ -16,17 +16,196 @@ import ray_tracing.elements.matrix as matrix
 import ray_tracing.utils.utils as utils
 
 
-class Shape:
+class Intersection:
+    """
+    This class represents an intersection between a ray and a shape_object.
+    """
+
+    def __init__(self, t, shape_object):
+        """
+        Constructor for the Intersection class.
+        """
+        self.t = t
+        self.shape_object = shape_object
+
+    def __repr__(self):
+        """
+        Returns a string representation of the intersection.
+        """
+        return f"Intersection(t={self.t}, shape_object={self.shape_object})"
+
+    def __eq__(self, other):
+        """
+        Checks if the intersection is equal to the other.
+        """
+        return self.t == other.t and self.shape_object == other.shape_object
+
+
+class Intersections:
+    """
+    This class represents a collection of intersections.
+    """
+
+    def __init__(self, *intersections):
+        """
+        Constructor for the Intersections class.
+        """
+        self.intersections = list(intersections)
+
+    def __repr__(self):
+        """
+        Returns a string representation of the intersections.
+        """
+        return f"Intersections({', '.join([str(i) for i in self.intersections])})"
+
+    def __eq__(self, other):
+        """
+        Checks if the intersections are equal to the other.
+        """
+        return self.intersections == other.intersections
+
+    def __getitem__(self, index):
+        """
+        Returns the intersection at the given index.
+        """
+        return self.intersections[index]
+
+    def __len__(self):
+        """
+        Returns the number of intersections.
+        """
+        return len(self.intersections)
+
+    def hit(self):
+        """
+        Returns the first intersection with a positive t value.
+        """
+        for i in self.intersections:
+            if i.t > 0:
+                return i
+        return None
+
+    def add(self, intersection):
+        """
+        Adds the given intersection to the collection.
+        """
+        self.intersections.append(intersection)
+
+    def sort(self):
+        """
+        Sorts the intersections by t value.
+        """
+        self.intersections.sort(key=lambda i: i.t)
+
+    def merge(self, other):
+        """
+        Merges the given intersections with this one.
+        """
+        self.intersections.extend(other.intersections)
+
+    def remove(self, intersection):
+        """
+        Removes the given intersection from the collection.
+        """
+        self.intersections.remove(intersection)
+
+    def remove_all(self):
+        """
+        Removes all intersections from the collection.
+        """
+        self.intersections = []
+
+    def contains(self, intersection):
+        """
+        Checks if the collection contains the given intersection.
+        """
+        return intersection in self.intersections
+
+    def count(self):
+        """
+        Returns the number of intersections in the collection.
+        """
+        return len(self.intersections)
+
+    def all(self):
+        """
+        Returns all intersections in the collection.
+        """
+        return self.intersections
+
+    def any(self):
+        """
+        Returns True if the collection contains any intersections.
+        """
+        return len(self.intersections) > 0
+
+    def all_positive(self):
+        """
+        Returns True if all intersections have a positive t value.
+        """
+        for intersection in self.intersections:
+            if intersection.t < 0:
+                return False
+
+
+class ShapeObject:
     """
     This class represents a shape in 3D space.
     """
 
-    def __init__(self, id=OBJECT_COUNT, transform=matrix.IdentityMatrix(4)):
+    def __init__(self, transform=matrix.IdentityMatrix(4), id=None):
         """
-        Constructor for the Shape class.
+        Constructor for the ShapeObject class.
         """
         self.transform = transform
-        self.id = id
+        if id is None:
+            self.id = utils.generate_uuid()
+        else:
+            self.id = id
+
+    def translate(self, x, y, z):
+        """
+        Translates the shape by the given values.
+        """
+        self.transform = matrix.translation(x, y, z) * self.transform
+
+    def scale(self, x, y, z):
+        """
+        Scales the shape by the given values.
+        """
+        self.transform = matrix.scaling(x, y, z) * self.transform
+
+    def rotate_x(self, r):
+        """
+        Rotates the shape around the x-axis by the given value.
+        """
+        self.transform = matrix.rotation_x(r) * self.transform
+
+    def rotate_y(self, r):
+        """
+        Rotates the shape around the y-axis by the given value.
+        """
+        self.transform = matrix.rotation_y(r) * self.transform
+
+    def rotate_z(self, r):
+        """
+        Rotates the shape around the z-axis by the given value.
+        """
+        self.transform = matrix.rotation_z(r) * self.transform
+
+    def rotate(self, angle_x=0, angle_y=0, angle_z=0, order="xyz"):
+        """
+        Rotates the shape around the given axes by the given values.
+        """
+        self.transform = (
+            matrix.rotation(angle_x, angle_y, angle_z, order) * self.transform
+        )
+
+    def shear(self, xy, xz, yx, yz, zx, zy):
+        """
+        Shears the shape by the given values.
+        """
+        self.transform = matrix.shearing(xy, xz, yx, yz, zx, zy) * self.transform
 
     def local_intersect(self, ray):
         """
@@ -71,12 +250,12 @@ class Shape:
         return object_normal.normalize()
 
 
-class Sphere(Shape):
+class Sphere(ShapeObject):
     """
     This class represents a sphere in 3D space.
     """
 
-    def __init__(self, radius=1, id=OBJECT_COUNT, transform=matrix.IdentityMatrix(4)):
+    def __init__(self, radius=1, transform=matrix.IdentityMatrix(4), id=None):
         """
         Constructor for the Sphere class.
         """
@@ -98,7 +277,10 @@ class Sphere(Shape):
 
         t1 = (-b - math.sqrt(discriminant)) / (2 * a)
         t2 = (-b + math.sqrt(discriminant)) / (2 * a)
-        return [t1, t2]
+        intersection_1 = Intersection(t1, self)
+        intersection_2 = Intersection(t2, self)
+        intersections = Intersections(intersection_1, intersection_2)
+        return intersections
 
     def local_normal_at(self, point):
         """

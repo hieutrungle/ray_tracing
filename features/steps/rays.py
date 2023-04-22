@@ -50,9 +50,3 @@ def step_impl(context, name, t, x, y, z):
     y = float(y)
     z = float(z)
     assert ray.position(t) == tuples.Point(x, y, z)
-
-
-# sphere intersection
-@given("sphere {s} ← sphere()")
-def step_impl(context, s):
-    setattr(context, s, shape.Sphere())

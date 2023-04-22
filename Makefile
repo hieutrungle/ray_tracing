@@ -19,6 +19,12 @@ test_trans:
 test_rays:
 	behave -i ./features/rays.feature
 
+test_spheres:
+	behave -i ./features/spheres.feature
+
+test_intersections:
+	behave -i ./features/intersections.feature
+
 clean:
 	rm -rf __pycache__
 
