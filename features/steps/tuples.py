@@ -73,15 +73,6 @@ def step_impl(context, x, y, z):
     assert context.p == tuples.Point(x, y, z)
 
 
-# vector
-@given("v ← vector({x}, {y}, {z})")
-def step_impl(context, x, y, z):
-    x = float(x)
-    y = float(y)
-    z = float(z)
-    context.v = tuples.Tuple(x, y, z, 0)
-
-
 @then("v = tuple({x}, {y}, {z}, 0)")
 def step_impl(context, x, y, z):
     x = float(x)
@@ -298,3 +289,20 @@ def step_impl(context, num1, num2, r, g, b):
         getattr(context, "c" + num2)
     )
     assert results == tuples.Color(r, g, b)
+
+
+# reflection
+@when("reflect {r} ← reflect({v}, {n})")
+def step_impl(context, r, v, n):
+    v = getattr(context, v)
+    n = getattr(context, n)
+    setattr(context, r, v.reflect(n))
+
+
+@then("reflect {r} = vector({x}, {y}, {z})")
+def step_impl(context, r, x, y, z):
+    x = float(x)
+    y = float(y)
+    z = float(z)
+    results = getattr(context, r)
+    assert results == tuples.Vector(x, y, z)
