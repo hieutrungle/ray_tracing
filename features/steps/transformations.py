@@ -14,7 +14,7 @@ from behave import given, when, then
 
 
 # translation
-@given("{transform} ← translation({x}, {y}, {z})")
+@given("transformation {transform} ← translation({x}, {y}, {z})")
 def step_impl(context, transform, x, y, z):
     x = float(x)
     y = float(y)
@@ -24,7 +24,7 @@ def step_impl(context, transform, x, y, z):
 
 
 # scaling
-@given("{transform} ← scaling({x}, {y}, {z})")
+@given("transformation {transform} ← scaling({x}, {y}, {z})")
 def step_impl(context, transform, x, y, z):
     x = float(x)
     y = float(y)
@@ -34,21 +34,21 @@ def step_impl(context, transform, x, y, z):
 
 
 # inverse
-@given("{inv} ← inverse({name})")
+@given("transformation {inv} ← inverse({name})")
 def step_impl(context, inv, name):
     inv_m = getattr(context, name).inverse()
     setattr(context, inv, inv_m)
 
 
 # translation does not affect vectors
-@then("{transform} * {v} = {v}")
+@then("transformation {transform} * {v} = {v}")
 def step_impl(context, transform, v):
     results = getattr(context, transform) * getattr(context, v)
     assert results == getattr(context, v)
 
 
 # transform a point
-@then("{transform} * {p} = point({x}, {y}, {z})")
+@then("transformation {transform} * {p} = point({x}, {y}, {z})")
 def step_impl(context, transform, p, x, y, z):
     x = float(x)
     y = float(y)
@@ -58,7 +58,7 @@ def step_impl(context, transform, p, x, y, z):
 
 
 # transform a vector
-@then("{transform} * {v} = vector({x}, {y}, {z})")
+@then("transformation {transform} * {v} = vector({x}, {y}, {z})")
 def step_impl(context, transform, v, x, y, z):
     x = float(x)
     y = float(y)
@@ -68,7 +68,7 @@ def step_impl(context, transform, v, x, y, z):
 
 
 # Rotate X
-@given("{transform} ← rotation_x({radians})")
+@given("transformation {transform} ← rotation_x({radians})")
 def step_impl(context, transform, radians):
     radians = float(radians)
     rotation_matrix = matrix.RotationXMatrix(radians)
@@ -76,7 +76,7 @@ def step_impl(context, transform, radians):
 
 
 # Rotate Y
-@given("{transform} ← rotation_y({radians})")
+@given("transformation {transform} ← rotation_y({radians})")
 def step_impl(context, transform, radians):
     radians = float(radians)
     rotation_matrix = matrix.RotationYMatrix(radians)
@@ -84,7 +84,7 @@ def step_impl(context, transform, radians):
 
 
 # Rotate Z
-@given("{transform} ← rotation_z({radians})")
+@given("transformation {transform} ← rotation_z({radians})")
 def step_impl(context, transform, radians):
     radians = float(radians)
     rotation_matrix = matrix.RotationZMatrix(radians)
@@ -92,7 +92,7 @@ def step_impl(context, transform, radians):
 
 
 # Shearing
-@given("{transform} ← shearing({xy}, {xz}, {yx}, {yz}, {zx}, {zy})")
+@given("transformation {transform} ← shearing({xy}, {xz}, {yx}, {yz}, {zx}, {zy})")
 def step_impl(context, transform, xy, xz, yx, yz, zx, zy):
     xy = float(xy)
     xz = float(xz)
@@ -119,7 +119,7 @@ def step_impl(context, point, x, y, z):
     assert getattr(context, point) == tuples.Point(x, y, z)
 
 
-@when("transform {transform1} ← {transform4} * {transform3} * {transform2}")
+@when("transformation {transform1} ← {transform4} * {transform3} * {transform2}")
 def step_impl(context, transform1, transform2, transform3, transform4):
     results = (
         getattr(context, transform4)
