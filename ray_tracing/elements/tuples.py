@@ -186,10 +186,10 @@ class Color(Tuple):
         super().__init__(r, g, b, a)
 
     def __repr__(self):
-        return f"Color({self.tuple_t[0]}, {self.tuple_t[1]}, {self.tuple_t[2], self.tuple_t[3]})"
+        return f"Color({self.tuple_t[0]}, {self.tuple_t[1]}, {self.tuple_t[2]}, {self.tuple_t[3]})"
 
     def __str__(self):
-        return f"Color({self.tuple_t[0]}, {self.tuple_t[1]}, {self.tuple_t[2], self.tuple_t[3]})"
+        return f"Color({self.tuple_t[0]}, {self.tuple_t[1]}, {self.tuple_t[2]}, {self.tuple_t[3]})"
 
     def r(self):
         return self.tuple_t[0]
