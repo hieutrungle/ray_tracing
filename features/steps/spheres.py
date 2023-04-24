@@ -70,3 +70,41 @@ def step_impl(context, s, m):
     s = getattr(context, s)
     m = getattr(context, m)
     assert s.transform == m
+
+
+# normal
+@when("normal {n} ← normal_at({s}, point({x}, {y}, {z}))")
+def step_impl(context, n, s, x, y, z):
+    s = getattr(context, s)
+    x = float(x)
+    y = float(y)
+    z = float(z)
+    setattr(context, n, s.normal_at(tuples.Point(x, y, z)))
+
+
+@then("normal {n} = vector({x}, {y}, {z})")
+def step_impl(context, n, x, y, z):
+    n = getattr(context, n)
+    x = float(x)
+    y = float(y)
+    z = float(z)
+    assert n == tuples.Vector(x, y, z)
+
+
+# normal has to be normalized
+@then("normal {n} = normalize({n})")
+def step_impl(context, n):
+    n = getattr(context, n)
+    assert n == n.normalize()
+
+
+# normal on transformed sphere
+@given("sphere {transform} ← scaling({x}, {y}, {z}) * rotation_z({angle_z})")
+def step_impl(context, transform, x, y, z, angle_z):
+    x = float(x)
+    y = float(y)
+    z = float(z)
+    angle_z = float(angle_z)
+    scaling_matrix = matrix.ScalingMatrix(x, y, z)
+    rotation_matrix = matrix.RotationZMatrix(angle_z)
+    setattr(context, transform, scaling_matrix * rotation_matrix)

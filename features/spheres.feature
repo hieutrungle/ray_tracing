@@ -68,3 +68,36 @@ Feature: Spheres
         When set_transform(s, m)
         And intersect xs ← intersect(s, r)
         Then intersect xs.count = 0
+
+    Scenario: The normal on a sphere at a point on the x axis
+        Given sphere s ← sphere()
+        When normal n ← normal_at(s, point(1, 0, 0))
+        Then normal n = vector(1, 0, 0)
+    Scenario: The normal on a sphere at a point on the y axis
+        Given sphere s ← sphere()
+        When normal n ← normal_at(s, point(0, 1, 0))
+        Then normal n = vector(0, 1, 0)
+    Scenario: The normal on a sphere at a point on the z axis
+        Given sphere s ← sphere()
+        When normal n ← normal_at(s, point(0, 0, 1))
+        Then normal n = vector(0, 0, 1)
+    Scenario: The normal on a sphere at a nonaxial point
+        Given sphere s ← sphere()
+        When normal n ← normal_at(s, point(0.5773502691896257, 0.5773502691896257, 0.5773502691896257))
+        Then normal n = vector(0.5773502691896257, 0.5773502691896257, 0.5773502691896257)
+    Scenario: The normal is a normalized vector
+        Given sphere s ← sphere()
+        When normal n ← normal_at(s, point(0.5773502691896257, 0.5773502691896257, 0.5773502691896257))
+        Then normal n = normalize(n)
+    Scenario: Computing the normal on a translated sphere
+        Given sphere s ← sphere()
+        And sphere m ← translation(0, 1, 0)
+        And sphere set_transform(s, m)
+        When normal n ← normal_at(s, point(0, 1.70711, -0.70711))
+        Then normal n = vector(0, 0.70711, -0.70711)
+    Scenario: Computing the normal on a transformed sphere
+        Given sphere s ← sphere()
+        And sphere m ← scaling(1, 0.5, 1) * rotation_z(0.6283185307179586)
+        And sphere set_transform(s, m)
+        When normal n ← normal_at(s, point(0, 0.7071067811865476, -0.7071067811865476))
+        Then normal n = vector(0, 0.97014, -0.24254)
