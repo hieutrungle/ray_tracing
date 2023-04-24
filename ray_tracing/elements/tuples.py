@@ -38,7 +38,8 @@ class Tuple:
         return Tuple(*(a / scalar for a in self.tuple_t))
 
     def __abs__(self):
-        return np.sqrt(sum(a * a for a in self.tuple_t))
+        magnitude = self.magnitude()
+        return magnitude
 
     def __repr__(self):
         return f"Tuple({self.tuple_t[0]}, {self.tuple_t[1]}, {self.tuple_t[2]}, {self.tuple_t[3]})"
@@ -56,7 +57,12 @@ class Tuple:
         self.tuple_t = (x, y, z, w)
 
     def magnitude(self):
-        return np.sqrt(sum(a * a for a in self.tuple_t))
+        # normalize the first 3 values
+        magnitude = 0
+        for i in range(len(self.tuple_t) - 1):
+            magnitude += self.tuple_t[i] ** 2
+        magnitude = float(np.sqrt(magnitude))
+        return magnitude
 
     def normalize(self):
         return self / self.magnitude()
@@ -75,6 +81,12 @@ class Tuple:
 
     def round(self, precision=5):
         return Tuple(*(round(a, precision) for a in self.tuple_t))
+
+    def to_point(self):
+        return Point(self.tuple_t[0], self.tuple_t[1], self.tuple_t[2])
+
+    def to_vector(self):
+        return Vector(self.tuple_t[0], self.tuple_t[1], self.tuple_t[2])
 
     # def reflect(self, normal):
     #     return self - normal * 2 * self.dot(normal)
