@@ -73,6 +73,9 @@ class Tuple:
             self.tuple_t[0] * other.tuple_t[1] - self.tuple_t[1] * other.tuple_t[0],
         )
 
+    def round(self, precision=5):
+        return Tuple(*(round(a, precision) for a in self.tuple_t))
+
     # def reflect(self, normal):
     #     return self - normal * 2 * self.dot(normal)
 
