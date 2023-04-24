@@ -1,5 +1,5 @@
 """
-This module contains the ShapeObject class.
+This module contains the Shape class.
 """
 
 import os
@@ -18,14 +18,14 @@ import ray_tracing.operations.intersection as intersection
 import ray_tracing.utils.utils as utils
 
 
-class ShapeObject:
+class Shape:
     """
     This class represents a shape in 3D space.
     """
 
     def __init__(self, transform=matrix.IdentityMatrix(4), id=None):
         """
-        Constructor for the ShapeObject class.
+        Constructor for the Shape class.
         """
         self.transform = transform
         if id is None:
@@ -127,7 +127,7 @@ class ShapeObject:
         return object_normal.normalize()
 
 
-class Sphere(ShapeObject):
+class Sphere(Shape):
     """
     This class represents a sphere in 3D space.
     """
