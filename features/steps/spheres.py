@@ -88,6 +88,10 @@ def step_impl(context, n, x, y, z):
     x = float(x)
     y = float(y)
     z = float(z)
+    n = n.round(5)
+    print(context.s.transform)
+    print(n)
+    print(tuples.Vector(x, y, z))
     assert n == tuples.Vector(x, y, z)
 
 
@@ -108,3 +112,18 @@ def step_impl(context, transform, x, y, z, angle_z):
     scaling_matrix = matrix.ScalingMatrix(x, y, z)
     rotation_matrix = matrix.RotationZMatrix(angle_z)
     setattr(context, transform, scaling_matrix * rotation_matrix)
+
+
+@given("sphere {transform} ← translation({x}, {y}, {z})")
+def step_impl(context, transform, x, y, z):
+    x = float(x)
+    y = float(y)
+    z = float(z)
+    setattr(context, transform, matrix.TranslationMatrix(x, y, z))
+
+
+@given("sphere set_transform({s}, {transform})")
+def step_impl(context, s, transform):
+    s = getattr(context, s)
+    transform = getattr(context, transform)
+    s.set_transform(transform)

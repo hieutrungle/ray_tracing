@@ -48,14 +48,14 @@ Feature: Spheres
         Then sphere s.transform = identity_matrix
     Scenario: Changing a sphere's transformation
         Given sphere s ← sphere()
-        And t ← translation(2, 3, 4)
+        And transformation t ← translation(2, 3, 4)
         When set_transform(s, t)
         Then sphere s.transform = t
 
     Scenario: Intersecting a scaled sphere with a ray
         Given ray r ← ray(point(0, 0, -5), vector(0, 0, 1))
         And sphere s ← sphere()
-        And m ← scaling(2, 2, 2)
+        And transformation m ← scaling(2, 2, 2)
         When set_transform(s, m)
         And intersect xs ← intersect(s, r)
         Then intersect xs.count = 2
@@ -64,7 +64,7 @@ Feature: Spheres
     Scenario: Intersecting a translated sphere with a ray
         Given ray r ← ray(point(0, 0, -5), vector(0, 0, 1))
         And sphere s ← sphere()
-        And m ← translation(5, 0, 0)
+        And transformation m ← translation(5, 0, 0)
         When set_transform(s, m)
         And intersect xs ← intersect(s, r)
         Then intersect xs.count = 0

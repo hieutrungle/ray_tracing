@@ -102,7 +102,7 @@ class ShapeObject:
         ray = ray.transform(self.transform.inverse())
         return self.local_intersect(ray)
 
-    def normal_at(self, point: tuples.Point):
+    def normal_at(self, point: tuples.Point) -> tuples.Vector:
         """
         Returns the normal of the shape at the given point.
         """
@@ -121,7 +121,8 @@ class ShapeObject:
         """
         Transforms the given normal from object space to world space.
         """
-        object_normal = self.transform.inverse().transpose() * normal
+        object_normal = self.transform.inverse()
+        object_normal = object_normal.transpose() * normal
         object_normal.w = 0
         return object_normal.normalize()
 
