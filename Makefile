@@ -25,6 +25,15 @@ test_spheres:
 test_intersections:
 	behave -i ./features/intersections.feature
 
+test_lights:
+	behave -i ./features/lights.feature
+
+test_materials:
+	behave -i ./features/materials.feature
+
+test_reflection:
+	behave -i ./features/spheres.feature --tags=reflection
+
 clean:
 	rm -rf __pycache__
 
