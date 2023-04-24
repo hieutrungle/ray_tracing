@@ -89,9 +89,6 @@ def step_impl(context, n, x, y, z):
     y = float(y)
     z = float(z)
     n = n.round(5)
-    print(context.s.transform)
-    print(n)
-    print(tuples.Vector(x, y, z))
     assert n == tuples.Vector(x, y, z)
 
 

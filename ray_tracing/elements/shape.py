@@ -121,9 +121,9 @@ class ShapeObject:
         """
         Transforms the given normal from object space to world space.
         """
-        object_normal = self.transform.inverse()
-        object_normal = object_normal.transpose() * normal
-        object_normal.w = 0
+        object_normal = self.transform.inverse().transpose()
+        object_normal = object_normal * normal
+        object_normal = object_normal.to_vector()
         return object_normal.normalize()
 
 
