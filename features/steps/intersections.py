@@ -9,7 +9,7 @@ sys.path.insert(0, package_path)
 import ray_tracing.elements.shape as shape
 import ray_tracing.operations.intersection as intersection
 import ray_tracing.elements.tuples as tuples
-import ray_tracing.elements.ray as ray
+import ray_tracing.elements.rays as rays
 from ray_tracing.utils.constants import *
 import ray_tracing.utils.utils as utils
 from behave import given, when, then

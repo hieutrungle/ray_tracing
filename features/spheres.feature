@@ -101,3 +101,16 @@ Feature: Spheres
         And sphere set_transform(s, m)
         When normal n ← normal_at(s, point(0, 0.7071067811865476, -0.7071067811865476))
         Then normal n = vector(0, 0.97014, -0.24254)
+
+    @reflection
+    Scenario: A sphere has a default material
+        Given sphere s ← sphere()
+        When material m ← s.material
+        Then material m = material()
+    @reflection
+    Scenario: A sphere may be assigned a material
+        Given sphere s ← sphere()
+        And material m ← material()
+        And material m.ambient ← 1
+        When sphere s.material ← m
+        Then sphere s.material = m

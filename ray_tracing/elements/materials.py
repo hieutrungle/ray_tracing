@@ -13,7 +13,7 @@ import math
 from ray_tracing.utils.constants import *
 import ray_tracing.elements.tuples as tuples
 import ray_tracing.elements.matrix as matrix
-import ray_tracing.elements.ray as ray
+import ray_tracing.elements.rays as rays
 import ray_tracing.operations.intersection as intersection
 import ray_tracing.utils.utils as utils
 

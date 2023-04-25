@@ -9,7 +9,7 @@ sys.path.insert(0, package_path)
 import ray_tracing.elements.shape as shape
 import ray_tracing.elements.matrix as matrix
 import ray_tracing.elements.tuples as tuples
-import ray_tracing.elements.ray as ray
+import ray_tracing.elements.rays as rays
 from ray_tracing.utils.constants import *
 import ray_tracing.utils.utils as utils
 from behave import given, when, then
@@ -20,7 +20,7 @@ from behave import given, when, then
 def step_impl(context, name, origin, direction):
     ray_origin = getattr(context, origin)
     ray_direction = getattr(context, direction)
-    setattr(context, name, ray.Ray(ray_origin, ray_direction))
+    setattr(context, name, rays.Ray(ray_origin, ray_direction))
 
 
 @then("ray {name}.{attribute} = {attribute}")
@@ -39,7 +39,7 @@ def step_impl(context, name, x1, y1, z1, x2, y2, z2):
     x2 = float(x2)
     y2 = float(y2)
     z2 = float(z2)
-    setattr(context, name, ray.Ray(tuples.Point(x1, y1, z1), tuples.Vector(x2, y2, z2)))
+    setattr(context, name, rays.Ray(tuples.Point(x1, y1, z1), tuples.Vector(x2, y2, z2)))
 
 
 @then("ray position({name}, {t}) = point({x}, {y}, {z})")

@@ -13,7 +13,8 @@ import math
 from ray_tracing.utils.constants import *
 import ray_tracing.elements.tuples as tuples
 import ray_tracing.elements.matrix as matrix
-import ray_tracing.elements.ray as ray
+import ray_tracing.elements.materials as materials
+import ray_tracing.elements.rays as rays
 import ray_tracing.operations.intersection as intersection
 import ray_tracing.utils.utils as utils
 
@@ -23,11 +24,14 @@ class Shape:
     This class represents a shape in 3D space.
     """
 
-    def __init__(self, transform=matrix.IdentityMatrix(4), id=None):
+    def __init__(
+        self, transform=matrix.IdentityMatrix(4), material=materials.Material(), id=None
+    ):
         """
         Constructor for the Shape class.
         """
         self.transform = transform
+        self.material = material
         if id is None:
             self.id = utils.generate_uuid()
         else:
@@ -83,7 +87,7 @@ class Shape:
         """
         self.transform = matrix.shearing(xy, xz, yx, yz, zx, zy) * self.transform
 
-    def local_intersect(self, ray: ray.Ray):
+    def local_intersect(self, ray: rays.Ray):
         """
         Intersects the shape with the given ray.
         """
@@ -95,7 +99,7 @@ class Shape:
         """
         raise NotImplementedError("local_normal_at not implemented.")
 
-    def intersect(self, ray: ray.Ray):
+    def intersect(self, ray: rays.Ray):
         """
         Intersects the shape with the given ray.
         """
@@ -133,15 +137,19 @@ class Sphere(Shape):
     """
 
     def __init__(
-        self, radius: float = 1.0, transform=matrix.IdentityMatrix(4), id=None
+        self,
+        radius: float = 1.0,
+        transform=matrix.IdentityMatrix(4),
+        material=materials.Material(),
+        id=None,
     ):
         """
         Constructor for the Sphere class.
         """
-        super().__init__(id=id, transform=transform)
+        super().__init__(id=id, transform=transform, material=material)
         self.radius = radius
 
-    def local_intersect(self, ray: ray.Ray):
+    def local_intersect(self, ray: rays.Ray):
         """
         Intersects the sphere with the given ray.
         """

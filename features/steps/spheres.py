@@ -9,7 +9,7 @@ sys.path.insert(0, package_path)
 import ray_tracing.elements.shape as shape
 import ray_tracing.elements.matrix as matrix
 import ray_tracing.elements.tuples as tuples
-import ray_tracing.elements.ray as ray
+import ray_tracing.elements.rays as rays
 from ray_tracing.utils.constants import *
 import ray_tracing.utils.utils as utils
 from behave import given, when, then
@@ -124,3 +124,24 @@ def step_impl(context, s, transform):
     s = getattr(context, s)
     transform = getattr(context, transform)
     s.set_transform(transform)
+
+
+# material
+@when("material {m} ← {sphere}.material")
+def step_impl(context, m, sphere):
+    sphere = getattr(context, sphere)
+    setattr(context, m, sphere.material)
+
+
+@when("sphere {s}.material ← {m}")
+def step_impl(context, s, m):
+    s = getattr(context, s)
+    m = getattr(context, m)
+    s.material = m
+
+
+@then("sphere {s}.material = {m}")
+def step_impl(context, s, m):
+    s = getattr(context, s)
+    m = getattr(context, m)
+    assert s.material == m

@@ -10,7 +10,7 @@ import ray_tracing.elements.shape as shape
 import ray_tracing.elements.matrix as matrix
 import ray_tracing.elements.tuples as tuples
 import ray_tracing.elements.light as light
-import ray_tracing.elements.ray as ray
+import ray_tracing.elements.rays as rays
 from ray_tracing.utils.constants import *
 import ray_tracing.utils.utils as utils
 from behave import given, when, then

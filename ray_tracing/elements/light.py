@@ -13,9 +13,9 @@ import math
 from ray_tracing.utils.constants import *
 import ray_tracing.elements.tuples as tuples
 import ray_tracing.elements.matrix as matrix
-import ray_tracing.elements.ray as ray
+import ray_tracing.elements.rays as rays
 import ray_tracing.operations.intersection as intersection
-import ray_tracing.elements.material as material
+import ray_tracing.elements.materials as materials
 import ray_tracing.utils.utils as utils
 
 
@@ -54,7 +54,7 @@ class Light:
         """
         Calculates the lighting at the given point.
         """
-        if isinstance(shape_object.material, material.Material):
+        if isinstance(shape_object.material, materials.Material):
             color = shape_object.material.color
             ambient = color * self.intensity
             if in_shadow:
@@ -88,7 +88,7 @@ class Light:
         distance = v.magnitude()
         direction = v.normalize()
 
-        r = ray.Ray(point, direction)
+        r = rays.Ray(point, direction)
         intersections = world.intersect(r)
         hit = intersections.hit()
         if hit is not None and hit.t < distance:
