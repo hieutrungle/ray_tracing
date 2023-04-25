@@ -41,6 +41,19 @@ class Material:
         self.specular = specular
         self.shininess = shininess
 
+    def set_material_properties(self, **kwargs):
+        """
+        Sets the material properties.
+        """
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    def __str__(self):
+        """
+        Returns a string representation of the material.
+        """
+        return f"Material(color={self.color}, ambient={self.ambient}, diffuse={self.diffuse}, specular={self.specular}, shininess={self.shininess})"
+
     def __repr__(self):
         """
         Returns a string representation of the material.
