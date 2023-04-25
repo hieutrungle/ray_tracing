@@ -9,7 +9,7 @@ sys.path.insert(0, package_path)
 import ray_tracing.elements.shape as shape
 import ray_tracing.elements.matrix as matrix
 import ray_tracing.elements.tuples as tuples
-import ray_tracing.elements.light as light
+import ray_tracing.elements.lights as lights
 import ray_tracing.elements.rays as rays
 from ray_tracing.utils.constants import *
 import ray_tracing.utils.utils as utils
@@ -33,11 +33,18 @@ def step_impl(context, position, x, y, z):
     setattr(context, position, tuples.Point(x, y, z))
 
 
+@given("light {name} ← point_light({position}, {intensity})")
+def step_impl(context, name, position, intensity):
+    light_position = getattr(context, position)
+    light_intensity = getattr(context, intensity)
+    setattr(context, name, lights.PointLight(light_position, light_intensity))
+
+
 @when("light {name} ← point_light({position}, {intensity})")
 def step_impl(context, name, position, intensity):
     light_position = getattr(context, position)
     light_intensity = getattr(context, intensity)
-    setattr(context, name, light.PointLight(light_position, light_intensity))
+    setattr(context, name, lights.PointLight(light_position, light_intensity))
 
 
 @then("light {name}.{attribute} = {attribute}")
