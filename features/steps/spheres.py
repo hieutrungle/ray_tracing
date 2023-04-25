@@ -48,7 +48,7 @@ def step_impl(context, xs, index, s):
     xs = getattr(context, xs)
     index = int(index)
     s = getattr(context, s)
-    assert xs[index].shape_object == s
+    assert xs[index].get_object() == s
 
 
 # transformation
