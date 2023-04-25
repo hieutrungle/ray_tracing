@@ -4,7 +4,7 @@ Feature: Intersections
         Given sphere s ← sphere()
         When intersection i ← intersection(3.5, s)
         Then intersection i.t = 3.5
-        And intersection i.shape_object = s
+        And intersection i.shape = s
     Scenario: Aggregating intersections
         Given sphere s ← sphere()
         And intersection i1 ← intersection(1, s)

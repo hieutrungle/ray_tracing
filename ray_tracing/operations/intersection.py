@@ -30,6 +30,18 @@ class Intersection:
         self.t = t
         self.shape = shape
 
+    def get_object(self):
+        """
+        Returns the object that was intersected.
+        """
+        return self.shape
+
+    def get_t(self):
+        """
+        Returns the t-value of the intersection.
+        """
+        return self.t
+
     def __repr__(self):
         """
         Returns a string representation of the intersection.

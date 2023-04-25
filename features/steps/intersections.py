@@ -16,35 +16,35 @@ from behave import given, when, then
 
 
 # intersection encapsulation
-@when("intersection {i} ← intersection({t}, {s})")
-def step_impl(context, i, t, s):
+@when("intersection {interx} ← intersection({t}, {s})")
+def step_impl(context, interx, t, s):
     t = float(t)
     s = getattr(context, s)
-    setattr(context, i, intersection.Intersection(t, s))
+    setattr(context, interx, intersection.Intersection(t, s))
 
 
-@then("intersection {i}.t = {value}")
-def step_impl(context, i, value):
-    i = getattr(context, i)
-    attribute = getattr(i, "t")
+@then("intersection {interx}.t = {value}")
+def step_impl(context, interx, value):
+    interx = getattr(context, interx)
+    attribute = interx.get_t()
     value = float(value)
     assert attribute == value
 
 
-@then("intersection {i}.shape_object = {given_object}")
-def step_impl(context, i, given_object):
-    i = getattr(context, i)
-    attribute = getattr(i, "shape_object")
+@then("intersection {interx}.shape = {given_object}")
+def step_impl(context, interx, given_object):
+    interx = getattr(context, interx)
+    attribute = interx.get_object()
     given_object = getattr(context, given_object)
     assert attribute == given_object
 
 
 # intersections
-@given("intersection {i} ← intersection({t}, {s})")
-def step_impl(context, i, t, s):
+@given("intersection {interx} ← intersection({t}, {s})")
+def step_impl(context, interx, t, s):
     t = float(t)
     s = getattr(context, s)
-    setattr(context, i, intersection.Intersection(t, s))
+    setattr(context, interx, intersection.Intersection(t, s))
 
 
 @given("intersections {xs} ← 2 intersections({i1}, {i2})")
@@ -86,20 +86,20 @@ def step_impl(context, xs, index, t):
 
 
 # hit
-@when("intersection {i} ← hit({xs})")
-def step_impl(context, i, xs):
+@when("intersection {interx} ← hit({xs})")
+def step_impl(context, interx, xs):
     xs = getattr(context, xs)
-    setattr(context, i, xs.hit())
+    setattr(context, interx, xs.hit())
 
 
-@then("intersection {i} = {given_intersection}")
-def step_impl(context, i, given_intersection):
-    i = getattr(context, i)
+@then("intersection {interx} = {given_intersection}")
+def step_impl(context, interx, given_intersection):
+    interx = getattr(context, interx)
     given_intersection = getattr(context, given_intersection)
-    assert i == given_intersection
+    assert interx == given_intersection
 
 
-@then("intersection {i} is Nothing")
-def step_impl(context, i):
-    i = getattr(context, i)
-    assert i is None
+@then("intersection {interx} is Nothing")
+def step_impl(context, interx):
+    interx = getattr(context, interx)
+    assert interx is None
