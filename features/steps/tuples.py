@@ -248,6 +248,14 @@ def step_impl(context, name, value):
     assert (tuple_value - float(value)) < EPSILON
 
 
+@then("color {c} = color({r}, {g}, {b})")
+def step_impl(context, c, r, g, b):
+    r = float(r)
+    g = float(g)
+    b = float(b)
+    assert getattr(context, c) == tuples.Color(r, g, b)
+
+
 # Adding colors
 @then("c{num1} + c{num2} = color({r}, {g}, {b})")
 def step_impl(context, num1, num2, r, g, b):
