@@ -34,6 +34,9 @@ test_materials:
 test_reflection:
 	behave -i ./features/spheres.feature --tags=reflection
 
+test_world:
+	behave -i ./features/world.feature
+
 clean:
 	rm -rf __pycache__
 
