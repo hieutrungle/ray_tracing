@@ -226,12 +226,12 @@ def step_impl(context, r, g, b):
     context.c = tuples.Color(r, g, b)
 
 
-@given("c{num} ← color({x}, {y}, {z})")
-def step_impl(context, num, x, y, z):
-    x = float(x)
-    y = float(y)
-    z = float(z)
-    setattr(context, "c" + num, tuples.Color(x, y, z))
+@given("color {c} ← color({r}, {g}, {b})")
+def step_impl(context, c, r, g, b):
+    r = float(r)
+    g = float(g)
+    b = float(b)
+    setattr(context, c, tuples.Color(r, g, b))
 
 
 # Representing color

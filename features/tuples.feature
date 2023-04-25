@@ -103,19 +103,19 @@ Feature: Tuples, Points, Vectors, and Colors
     And c.b = 1.7
 
   Scenario: Adding colors
-    Given c1 ← color(0.9, 0.6, 0.75)
-    And c2 ← color(0.7, 0.1, 0.25)
+    Given color c1 ← color(0.9, 0.6, 0.75)
+    And color c2 ← color(0.7, 0.1, 0.25)
     Then c1 + c2 = color(1.6, 0.7, 1.0)
   Scenario: Subtracting colors
-    Given c1 ← color(0.9, 0.6, 0.75)
-    And c2 ← color(0.7, 0.1, 0.25)
+    Given color c1 ← color(0.9, 0.6, 0.75)
+    And color c2 ← color(0.7, 0.1, 0.25)
     Then c1 - c2 = color(0.2, 0.5, 0.5)
   Scenario: Multiplying a color by a scalar
-    Given c ← color(0.2, 0.3, 0.4)
+    Given color c ← color(0.2, 0.3, 0.4)
     Then c * 2 = color(0.4, 0.6, 0.8)
   Scenario: Multiplying colors
-    Given c1 ← color(1, 0.2, 0.4)
-    And c2 ← color(0.9, 1, 0.1)
+    Given color c1 ← color(1, 0.2, 0.4)
+    And color c2 ← color(0.9, 1, 0.1)
     Then c1 * c2 = color(0.9, 0.2, 0.04)
 
   Scenario: Reflecting a vector approaching at 45°
