@@ -66,3 +66,35 @@ def step_impl(context, m, value):
 def step_impl(context, m):
     material = getattr(context, m)
     assert material == materials.Material()
+
+
+# lighting
+@when(
+    "material lighting {result} ← lighting({material}, {light}, {position}, {eyev}, {normalv})"
+)
+def step_impl(context, result, material, light, position, eyev, normalv):
+    material = getattr(context, material)
+    light = getattr(context, light)
+    position = getattr(context, position)
+    eyev = getattr(context, eyev)
+    normalv = getattr(context, normalv)
+    print(f"material: {material}")
+    print(f"light: {light}")
+    print(f"position: {position}")
+    print(f"eyev: {eyev}")
+    print(f"normalv: {normalv}")
+    lighting_effect = material.lighting(light, position, eyev, normalv)
+    print(f"lighting_effect: {lighting_effect}")
+    setattr(
+        context,
+        result,
+        lighting_effect,
+    )
+
+
+@then("material lighting {result} = color({r}, {g}, {b})")
+def step_impl(context, result, r, g, b):
+    r = float(r)
+    g = float(g)
+    b = float(b)
+    setattr(context, result, tuples.Color(r, g, b))
