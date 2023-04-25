@@ -233,6 +233,62 @@ class Matrix:
             results.append(row)
         return Matrix(results)
 
+    def translate(self, x, y, z):
+        """
+        Translate the matrix.
+        """
+
+        translation_matrix = TranslationMatrix(x, y, z)
+        return translation_matrix.matrix_multiplication(self)
+
+    def scale(self, x, y, z):
+        """
+        Scale the matrix.
+        """
+
+        scaling_matrix = ScalingMatrix(x, y, z)
+        return scaling_matrix.matrix_multiplication(self)
+
+    def rotate_x(self, radians):
+        """
+        Rotate the matrix around x axis.
+        """
+
+        rotation_matrix = RotationXMatrix(radians)
+        return rotation_matrix.matrix_multiplication(self)
+
+    def rotate_y(self, radians):
+        """
+        Rotate the matrix around y axis.
+        """
+
+        rotation_matrix = RotationYMatrix(radians)
+        return rotation_matrix.matrix_multiplication(self)
+
+    def rotate_z(self, radians):
+        """
+        Rotate the matrix around z axis.
+        """
+
+        rotation_matrix = RotationZMatrix(radians)
+        return rotation_matrix.matrix_multiplication(self)
+
+    def shear(self, xy, xz, yx, yz, zx, zy):
+        """
+        Shear the matrix.
+        """
+
+        shear_matrix = ShearingMatrix(xy, xz, yx, yz, zx, zy)
+        return shear_matrix.matrix_multiplication(self)
+
+    def rotate(self, rad_x, rad_y, rad_z, order="xyz"):
+        """
+        Rotate the matrix around x, y, z axis.
+        """
+
+        rotation_matrix = RotationMatrix(rad_x, rad_y, rad_z, order)
+        return rotation_matrix.matrix_multiplication(self)
+
 
 class IdentityMatrix(Matrix):
     """
@@ -290,10 +346,10 @@ class RotationZMatrix(Matrix):
 
 
 class RotationMatrix(Matrix):
-    def __init__(self, angle_x, angle_y, angle_z, order="xyz"):
-        x_rotation = RotationXMatrix(angle_x)
-        y_rotation = RotationYMatrix(angle_y)
-        z_rotation = RotationZMatrix(angle_z)
+    def __init__(self, rad_x, rad_y, rad_z, order="xyz"):
+        x_rotation = RotationXMatrix(rad_x)
+        y_rotation = RotationYMatrix(rad_y)
+        z_rotation = RotationZMatrix(rad_z)
         if order == "xyz":
             super().__init__(z_rotation * y_rotation * x_rotation)
         elif order == "xzy":
