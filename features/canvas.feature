@@ -23,9 +23,9 @@ Feature: Canvas
             """
     Scenario: Constructing the PPM pixel data
         Given can ← canvas(5, 3)
-        And c1 ← color(1.5, 0, 0)
-        And c2 ← color(0, 0.5, 0)
-        And c3 ← color(-0.5, 0, 1)
+        And color c1 ← color(1.5, 0, 0)
+        And color c2 ← color(0, 0.5, 0)
+        And color c3 ← color(-0.5, 0, 1)
         When write_pixel(can, 0, 0, c1)
         And write_pixel(can, 2, 1, c2)
         And write_pixel(can, 4, 2, c3)
