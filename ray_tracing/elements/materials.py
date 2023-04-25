@@ -14,6 +14,7 @@ from ray_tracing.utils.constants import *
 import ray_tracing.elements.tuples as tuples
 import ray_tracing.elements.matrix as matrix
 import ray_tracing.elements.rays as rays
+import ray_tracing.elements.lights as lights
 import ray_tracing.operations.intersection as intersection
 import ray_tracing.utils.utils as utils
 
@@ -58,40 +59,40 @@ class Material:
             and self.shininess == other.shininess
         )
 
-    # def lighting(
-    #     self,
-    #     light: Light,
-    #     point: tuples.Point,
-    #     eye_vector: tuples.Vector,
-    #     normal_vector: tuples.Vector,
-    #     in_shadow=False,
-    # ):
-    #     """
-    #     Calculates the lighting at the given point.
-    #     """
-    #     if isinstance(light, Light):
-    #         color = self.color
-    #         ambient = color * self.ambient
-    #         if in_shadow:
-    #             return ambient
-    #         else:
-    #             light_vector = (light.position - point).normalize()
-    #             light_dot_normal = light_vector.dot(normal_vector)
-    #             if light_dot_normal < 0:
-    #                 diffuse = BLACK
-    #                 specular = BLACK
-    #             else:
-    #                 diffuse = color * self.diffuse * light_dot_normal
-    #                 reflect_vector = (-light_vector).reflect(normal_vector)
-    #                 reflect_dot_eye = reflect_vector.dot(eye_vector)
-    #                 if reflect_dot_eye <= 0:
-    #                     specular = BLACK
-    #                 else:
-    #                     factor = reflect_dot_eye**self.shininess
-    #                     specular = light.intensity * self.specular * factor
-    #             return ambient + diffuse + specular
-    #     else:
-    #         raise TypeError("The light must be a Light object.")
+    def lighting(
+        self,
+        light: lights.Light,
+        point: tuples.Point,
+        eye_vector: tuples.Vector,
+        normal_vector: tuples.Vector,
+        in_shadow=False,
+    ):
+        """
+        Calculates the lighting at the given point.
+        """
+        if isinstance(light, lights.Light):
+            color = self.color
+            ambient = color * self.ambient
+            if in_shadow:
+                return ambient
+            else:
+                light_vector = (light.position - point).normalize()
+                light_dot_normal = light_vector.dot(normal_vector)
+                if light_dot_normal < 0:
+                    diffuse = BLACK
+                    specular = BLACK
+                else:
+                    diffuse = color * self.diffuse * light_dot_normal
+                    reflect_vector = (-light_vector).reflect(normal_vector)
+                    reflect_dot_eye = reflect_vector.dot(eye_vector)
+                    if reflect_dot_eye <= 0:
+                        specular = BLACK
+                    else:
+                        factor = reflect_dot_eye**self.shininess
+                        specular = light.intensity * self.specular * factor
+                return ambient + diffuse + specular
+        else:
+            raise TypeError("The light must be a Light object.")
 
     # def lighting(
     #     self,

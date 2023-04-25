@@ -18,10 +18,10 @@ Feature: Tuples, Points, Vectors, and Colors
     And a is a vector
 
   Scenario: point() creates tuples with w=1
-    Given p ← point(4, -4, 3)
+    Given point p ← point(4, -4, 3)
     Then p = tuple(4, -4, 3, 1)
   Scenario: vector() creates tuples with w=0
-    Given v ← vector(4, -4, 3)
+    Given vector v ← vector(4, -4, 3)
     Then v = tuple(4, -4, 3, 0)
 
   Scenario: Adding two tuples
@@ -30,20 +30,20 @@ Feature: Tuples, Points, Vectors, and Colors
     Then a1 + a2 = tuple(1, 1, 6, 1)
 
   Scenario: Subtracting two points
-    Given p1 ← point(3, 2, 1)
-    And p2 ← point(5, 6, 7)
+    Given point p1 ← point(3, 2, 1)
+    And point p2 ← point(5, 6, 7)
     Then p1 - p2 = vector(-2, -4, -6)
   Scenario: Subtracting a vector from a point
-    Given p ← point(3, 2, 1)
-    And v ← vector(5, 6, 7)
+    Given point p ← point(3, 2, 1)
+    And vector v ← vector(5, 6, 7)
     Then p - v = point(-2, -4, -6)
   Scenario: Subtracting two vectors
-    Given v1 ← vector(3, 2, 1)
-    And v2 ← vector(5, 6, 7)
+    Given vector v1 ← vector(3, 2, 1)
+    And vector v2 ← vector(5, 6, 7)
     Then v1 - v2 = vector(-2, -4, -6)
   Scenario: Subtracting a vector from the zero vector
-    Given v0 ← vector(0, 0, 0)
-    And v1 ← vector(1, -2, 3)
+    Given vector v0 ← vector(0, 0, 0)
+    And vector v1 ← vector(1, -2, 3)
     Then v0 - v1 = vector(-1, 2, -3)
 
   Scenario: Negating a tuple
@@ -58,41 +58,41 @@ Feature: Tuples, Points, Vectors, and Colors
     Then a * 0.5 = tuple(0.5, -1, 1.5, -2)
 
   Scenario: Computing the magnitude of vector(1, 0, 0)
-    Given v ← vector(1, 0, 0)
+    Given vector v ← vector(1, 0, 0)
     Then magnitude(v) = 1
   Scenario: Computing the magnitude of vector(0, 1, 0)
-    Given v ← vector(0, 1, 0)
+    Given vector v ← vector(0, 1, 0)
     Then magnitude(v) = 1
   Scenario: Computing the magnitude of vector(0, 0, 1)
-    Given v ← vector(0, 0, 1)
+    Given vector v ← vector(0, 0, 1)
     Then magnitude(v) = 1
   Scenario: Computing the magnitude of vector(1, 2, 3)
-    Given v ← vector(1, 2, 3)
+    Given vector v ← vector(1, 2, 3)
     Then magnitude(v) = 3.741657387
   Scenario: Computing the magnitude of vector(-1, -2, -3)
-    Given v ← vector(-1, -2, -3)
+    Given vector v ← vector(-1, -2, -3)
     Then magnitude(v) = 3.741657387
 
   Scenario: Normalizing vector(4, 0, 0) gives (1, 0, 0)
-    Given v ← vector(4, 0, 0)
+    Given vector v ← vector(4, 0, 0)
     Then normalize(v) = vector(1, 0, 0)
   Scenario: Normalizing vector(1, 2, 3)
-    Given v ← vector(1, 2, 3)
+    Given vector v ← vector(1, 2, 3)
     # vector(1/√14,2/√14,3/√14)
     Then normalize(v) = vector(0.2672612419, 0.5345224838, 0.8017837257)
   Scenario: The magnitude of a normalized vector
-    Given v ← vector(1, 2, 3)
+    Given vector v ← vector(1, 2, 3)
     When norm ← normalize(v)
     Then magnitude(norm) = 1
 
   Scenario: The dot product of two tuples
-    Given v1 ← vector(1, 2, 3)
-    And v2 ← vector(2, 3, 4)
+    Given vector v1 ← vector(1, 2, 3)
+    And vector v2 ← vector(2, 3, 4)
     Then dot(v1, v2) = 20
 
   Scenario: The cross product of two vectors
-    Given v1 ← vector(1, 2, 3)
-    And v2 ← vector(2, 3, 4)
+    Given vector v1 ← vector(1, 2, 3)
+    And vector v2 ← vector(2, 3, 4)
     Then cross(v1, v2) = vector(-1, 2, -1)
     And cross(v2, v1) = vector(1, -2, 1)
 
@@ -119,12 +119,12 @@ Feature: Tuples, Points, Vectors, and Colors
     Then c1 * c2 = color(0.9, 0.2, 0.04)
 
   Scenario: Reflecting a vector approaching at 45°
-    Given v ← vector(1, -1, 0)
-    And n ← vector(0, 1, 0)
+    Given vector v ← vector(1, -1, 0)
+    And vector n ← vector(0, 1, 0)
     When reflect r ← reflect(v, n)
     Then reflect r = vector(1, 1, 0)
   Scenario: Reflecting a vector off a slanted surface
-    Given v ← vector(0, -1, 0)
-    And n ← vector(0.7071067811865476, 0.7071067811865476, 0)
+    Given vector v ← vector(0, -1, 0)
+    And vector n ← vector(0.7071067811865476, 0.7071067811865476, 0)
     When reflect r ← reflect(v, n)
     Then reflect r = vector(1, 0, 0)

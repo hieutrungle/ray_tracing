@@ -102,7 +102,7 @@ def step_impl(context, num1, num2, x, y, z, w):
 
 
 # define points and vectors
-@given("{name} ← point({x}, {y}, {z})")
+@given("point {name} ← point({x}, {y}, {z})")
 def step_impl(context, name, x, y, z):
     x = float(x)
     y = float(y)
@@ -110,7 +110,7 @@ def step_impl(context, name, x, y, z):
     setattr(context, name, tuples.Point(x, y, z))
 
 
-@given("{name} ← vector({x}, {y}, {z})")
+@given("vector {name} ← vector({x}, {y}, {z})")
 def step_impl(context, name, x, y, z):
     x = float(x)
     y = float(y)
