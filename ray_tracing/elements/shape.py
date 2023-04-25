@@ -37,11 +37,39 @@ class Shape:
         else:
             self.id = id
 
+    def __str__(self):
+        """
+        Returns a string representation of the shape.
+        """
+        return (
+            f"Shape(id={self.id}, transform={self.transform}, material={self.material})"
+        )
+
+    def __repr__(self):
+        """
+        Returns a string representation of the shape.
+        """
+        return (
+            f"Shape(id={self.id}, transform={self.transform}, material={self.material})"
+        )
+
+    def __eq__(self, other):
+        """
+        Checks if two shapes are equal.
+        """
+        return self.transform == other.transform and self.material == other.material
+
     def set_transform(self, transform):
         """
         Sets the transform of the shape.
         """
         self.transform = transform
+
+    def set_material(self, material):
+        """
+        Sets the material of the shape.
+        """
+        self.material = material
 
     def translate(self, x, y, z):
         """
@@ -150,7 +178,7 @@ class Sphere(Shape):
         self.radius = radius
 
     def __repr__(self):
-        return f"Sphere(radius={self.radius}, id={self.id})"
+        return f"Sphere(id={self.id}, radius={self.radius}, transform=\n{self.transform}, material={self.material})"
 
     def local_intersect(self, ray: rays.Ray):
         """
