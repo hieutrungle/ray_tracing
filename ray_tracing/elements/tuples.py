@@ -29,8 +29,13 @@ class Tuple:
     def __neg__(self):
         return Tuple(*(-a for a in self.tuple_t))
 
-    def __mul__(self, scalar):
-        return Tuple(*(a * scalar for a in self.tuple_t))
+    def __mul__(self, other):
+        results = None
+        if isinstance(other, Tuple):
+            results = Tuple(*(a * b for a, b in zip(self.tuple_t, other.tuple_t)))
+        elif isinstance(other, (int, float)):
+            results = Tuple(*(a * other for a in self.tuple_t))
+        return results
 
     def __truediv__(self, scalar):
         if scalar == 0:
@@ -88,6 +93,9 @@ class Tuple:
     def to_vector(self):
         return Vector(self.tuple_t[0], self.tuple_t[1], self.tuple_t[2])
 
+    def to_color(self):
+        return Color(self.tuple_t[0], self.tuple_t[1], self.tuple_t[2], self.tuple_t[3])
+
     # def reflect(self, normal):
     #     return self - normal * 2 * self.dot(normal)
 
@@ -107,8 +115,7 @@ class Point(Tuple):
         return f"Point({self.tuple_t[0]}, {self.tuple_t[1]}, {self.tuple_t[2]})"
 
     def __add__(self, other):
-        results = super().__add__(other)
-        return Point(results.tuple_t[0], results.tuple_t[1], results.tuple_t[2])
+        return super().__add__(other).to_point()
 
     def __sub__(self, other):
         results = super().__sub__(other)
@@ -116,6 +123,9 @@ class Point(Tuple):
             return Vector(results.tuple_t[0], results.tuple_t[1], results.tuple_t[2])
         elif isinstance(other, Vector):
             return Point(results.tuple_t[0], results.tuple_t[1], results.tuple_t[2])
+
+    def __neg__(self):
+        return super().__neg__().to_point()
 
     def x(self):
         return self.tuple_t[0]
@@ -154,6 +164,33 @@ class Vector(Tuple):
         elif isinstance(other, Point):
             return Point(results.tuple_t[0], results.tuple_t[1], results.tuple_t[2])
 
+    def __sub__(self, other):
+        results = super().__sub__(other)
+        if isinstance(other, Vector):
+            return Vector(results.tuple_t[0], results.tuple_t[1], results.tuple_t[2])
+        elif isinstance(other, Point):
+            return Point(results.tuple_t[0], results.tuple_t[1], results.tuple_t[2])
+
+    def __neg__(self):
+        return super().__neg__().to_vector()
+
+    def __mul__(self, other):
+        if isinstance(other, int) or isinstance(other, float):
+            new_vector = [a * other for a in self.tuple_t][:-1]
+            new_vector = Vector(*new_vector)
+        else:
+            raise ValueError("Vector can only be multiplied by a scalar")
+        return new_vector
+
+    def dot(self, other):
+        return super().dot(other)
+
+    def cross(self, other):
+        return super().cross(other).to_vector()
+
+    def normalize(self):
+        return super().normalize().to_vector()
+
     def x(self):
         return self.tuple_t[0]
 
@@ -190,6 +227,22 @@ class Color(Tuple):
 
     def __str__(self):
         return f"Color({self.tuple_t[0]}, {self.tuple_t[1]}, {self.tuple_t[2]}, {self.tuple_t[3]})"
+
+    def __add__(self, other):
+        return super().__add__(other).to_color()
+
+    def __sub__(self, other):
+        return super().__sub__(other).to_color()
+
+    def __mul__(self, other):
+        results = None
+        if isinstance(other, Color):
+            results = self.hadamard_product(other)
+        elif isinstance(other, int) or isinstance(other, float):
+            results = Color(
+                *[a * other for a in self.tuple_t],
+            )
+        return results
 
     def r(self):
         return self.tuple_t[0]
