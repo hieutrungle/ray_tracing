@@ -149,6 +149,9 @@ class Sphere(Shape):
         super().__init__(id=id, transform=transform, material=material)
         self.radius = radius
 
+    def __repr__(self):
+        return f"Sphere(radius={self.radius}, id={self.id})"
+
     def local_intersect(self, ray: rays.Ray):
         """
         Intersects the sphere with the given ray.
