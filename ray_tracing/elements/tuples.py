@@ -209,8 +209,6 @@ class Vector(Tuple):
     def reflect(self, normal: "Vector"):
         if not normal.is_vector():
             raise ValueError("Normal must be a vector")
-        elif normal.magnitude() != 1:
-            raise ValueError("Normal must be a unit vector")
         return self - normal * 2 * self.dot(normal)
 
 
