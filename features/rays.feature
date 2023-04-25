@@ -1,8 +1,8 @@
 Feature: Rays
 
     Scenario: Creating and querying a ray
-        Given origin ← point(1, 2, 3)
-        And direction ← vector(4, 5, 6)
+        Given point origin ← point(1, 2, 3)
+        And vector direction ← vector(4, 5, 6)
         When ray r ← ray(origin, direction)
         Then ray r.origin = origin
         And ray r.direction = direction
