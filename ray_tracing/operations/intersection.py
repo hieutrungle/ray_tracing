@@ -20,27 +20,27 @@ from typing import List
 
 class Intersection:
     """
-    This class represents an intersection between a ray and a shape_object.
+    This class represents an intersection between a ray and a shape.
     """
 
-    def __init__(self, t: float, shape_object):
+    def __init__(self, t: float, shape):
         """
         Constructor for the Intersection class.
         """
         self.t = t
-        self.shape_object = shape_object
+        self.shape = shape
 
     def __repr__(self):
         """
         Returns a string representation of the intersection.
         """
-        return f"Intersection(t={self.t}, shape_object={self.shape_object})"
+        return f"Intersection(t={self.t}, shape={self.shape})"
 
     def __eq__(self, other):
         """
         Checks if the intersection is equal to the other.
         """
-        return self.t == other.t and self.shape_object == other.shape_object
+        return self.t == other.t and self.shape == other.shape
 
 
 class Intersections:
@@ -85,9 +85,17 @@ class Intersections:
         """
         if self.any():
             self.sort()
-            for i in self.intersections:
-                if i.t > 0:
-                    return i
+            for intersection in self.intersections:
+                if intersection.t > 0:
+                    return intersection
+        return None
+
+    def get_first_hit(self):
+        """
+        Returns the first intersection with a positive t value.
+        """
+        if self.any():
+            return self.first_hit
         return None
 
     def add(self, intersection: Intersection):
