@@ -145,3 +145,14 @@ def step_impl(context, s, m):
     s = getattr(context, s)
     m = getattr(context, m)
     assert s.material == m
+
+
+# sphere with material
+@given("sphere {s} ← sphere() with")
+def step_impl(context, s):
+    given_list = utils.context_table_to_list(context)
+    material = utils.list_to_material(given_list)
+    transform = utils.list_to_transform(given_list)
+    # print(transform)
+    # assert False
+    setattr(context, s, shape.Sphere(material=material, transform=transform))
