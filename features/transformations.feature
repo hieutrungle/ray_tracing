@@ -2,34 +2,34 @@ Feature: Transformation
 
     Scenario: Multiplying by a translation matrix
         Given transformation transform ← translation(5, -3, 2)
-        And p ← point(-3, 4, 5)
+        And point p ← point(-3, 4, 5)
         Then transformation transform * p = point(2, 1, 7)
     Scenario: Multiplying by the inverse of a translation matrix
         Given transformation transform ← translation(5, -3, 2)
         And transformation inv ← inverse(transform)
-        And p ← point(-3, 4, 5)
+        And point p ← point(-3, 4, 5)
         Then transformation inv * p = point(-8, 7, 3)
     Scenario: Translation does not affect vectors
         Given transformation transform ← translation(5, -3, 2)
-        And v ← vector(-3, 4, 5)
+        And vector v ← vector(-3, 4, 5)
         Then transformation transform * v = v
 
     Scenario: A scaling matrix applied to a point
         Given transformation transform ← scaling(2, 3, 4)
-        And p ← point(-4, 6, 8)
+        And point p ← point(-4, 6, 8)
         Then transformation transform * p = point(-8, 18, 32)
     Scenario: A scaling matrix applied to a vector
         Given transformation transform ← scaling(2, 3, 4)
-        And v ← vector(-4, 6, 8)
+        And vector v ← vector(-4, 6, 8)
         Then transformation transform * v = vector(-8, 18, 32)
     Scenario: Multiplying by the inverse of a scaling matrix
         Given transformation transform ← scaling(2, 3, 4)
         And transformation inv ← inverse(transform)
-        And v ← vector(-4, 6, 8)
+        And vector v ← vector(-4, 6, 8)
         Then transformation inv * v = vector(-2, 2, 2)
     Scenario: Reflection is scaling by a negative value
         Given transformation transform ← scaling(-1, 1, 1)
-        And p ← point(2, 3, 4)
+        And point p ← point(2, 3, 4)
         Then transformation transform * p = point(-2, 3, 4)
 
     Scenario: Rotating a point around the x axis
