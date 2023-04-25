@@ -41,7 +41,6 @@ class Ray:
         :param t: The time at which to calculate the position.
         :return: The position of the ray at time t.
         """
-        # new_point = self.origin + self.direction * t
         return self.origin + self.direction * t
 
     def transform(self, trans: matrix.Matrix):
