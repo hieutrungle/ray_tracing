@@ -14,8 +14,72 @@ from ray_tracing.utils.constants import *
 
 # import ray_tracing.elements.shape as shapeobject
 import ray_tracing.elements.tuples as tuples
+import ray_tracing.elements.rays as rays
+import ray_tracing.elements.materials as materials
+
 import ray_tracing.utils.utils as utils
 from typing import List
+
+
+class IntersectionComputations:
+    """
+    Computation properties for an intersection.
+    """
+
+    def __init__(
+        self,
+        t: float,
+        shape,
+        point: tuples.Point,
+        eye_vector: tuples.Vector,
+        normal_vector: tuples.Vector,
+        inside: bool = False,
+    ):
+        """
+        Constructor for the IntersectionComputations class.
+        """
+        self.t = t
+        self.shape = shape
+        self.point = point
+        self.eye_vector = eye_vector
+        self.normal_vector = normal_vector
+        self.inside = inside
+
+    def get_t(self):
+        """
+        Returns the t-value of the intersection.
+        """
+        return self.t
+
+    def get_object(self):
+        """
+        Returns the object that was intersected.
+        """
+        return self.shape
+
+    def get_point(self):
+        """
+        Returns the point of intersection.
+        """
+        return self.point
+
+    def get_eye_vector(self):
+        """
+        Returns the eye vector.
+        """
+        return self.eye_vector
+
+    def get_normal_vector(self):
+        """
+        Returns the normal vector.
+        """
+        return self.normal_vector
+
+    def is_inside(self):
+        """
+        Returns whether the intersection is inside the object.
+        """
+        return self.inside
 
 
 class Intersection:
@@ -48,11 +112,32 @@ class Intersection:
         """
         return f"Intersection(t={self.t}, shape={self.shape})"
 
-    def __eq__(self, other):
+    def __eq__(self, other: "Intersection"):
         """
         Checks if the intersection is equal to the other.
         """
         return self.t == other.t and self.shape == other.shape
+
+    def prepare_computations(self, ray: rays.Ray):
+        """
+        Prepares the computations for the intersection.
+        """
+        point = ray.position(self.t)
+        eye_vector = -ray.direction
+        normal_vector = self.shape.normal_at(point)
+        if normal_vector.dot(eye_vector) < 0:
+            inside = True
+            normal_vector = -normal_vector
+        else:
+            inside = False
+        return IntersectionComputations(
+            self.t,
+            self.shape,
+            point,
+            eye_vector,
+            normal_vector,
+            inside,
+        )
 
 
 class Intersections:

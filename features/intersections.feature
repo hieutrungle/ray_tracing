@@ -44,3 +44,30 @@ Feature: Intersections
         And intersections xs ← 4 intersections(i1, i2, i3, i4)
         When intersection i ← hit(xs)
         Then intersection i = i4
+
+    Scenario: Precomputing the state of an intersection
+        Given ray r ← ray(point(0, 0, -5), vector(0, 0, 1))
+        And sphere shape ← sphere()
+        And intersection i ← intersection(4, shape)
+        When computation comps ← prepare_computations(i, r)
+        Then computation comps.t = i.t
+        And computation comps.object = i.object
+        And computation comps.point = point(0, 0, -1)
+        And computation comps.eyev = vector(0, 0, -1)
+        And computation comps.normalv = vector(0, 0, -1)
+    Scenario: The hit, when an intersection occurs on the outside
+        Given ray r ← ray(point(0, 0, -5), vector(0, 0, 1))
+        And sphere shape ← sphere()
+        And intersection i ← intersection(4, shape)
+        When computation comps ← prepare_computations(i, r)
+        Then computation comps.inside = false
+    Scenario: The hit, when an intersection occurs on the inside
+        Given ray r ← ray(point(0, 0, 0), vector(0, 0, 1))
+        And sphere shape ← sphere()
+        And intersection i ← intersection(1, shape)
+        When computation comps ← prepare_computations(i, r)
+        Then computation comps.point = point(0, 0, 1)
+        And computation comps.eyev = vector(0, 0, -1)
+        And computation comps.inside = true
+        # normal would have been (0, 0, 1), but is inverted!
+        And computation comps.normalv = vector(0, 0, -1)

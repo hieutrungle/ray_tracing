@@ -103,3 +103,62 @@ def step_impl(context, interx, given_intersection):
 def step_impl(context, interx):
     interx = getattr(context, interx)
     assert interx is None
+
+
+# prepare computations
+@when("computation {comp} ← prepare_computations({interx}, {ray})")
+def step_impl(context, comp, interx, ray):
+    interx = getattr(context, interx)
+    ray = getattr(context, ray)
+    setattr(context, comp, interx.prepare_computations(ray))
+
+
+@then("computation {comp}.t = {interx}.t")
+def step_impl(context, comp, interx):
+    comp = getattr(context, comp)
+    interx = getattr(context, interx)
+    assert comp.t == interx.t
+
+
+@then("computation {comp}.object = {interx}.object")
+def step_impl(context, comp, interx):
+    comp = getattr(context, comp)
+    interx = getattr(context, interx)
+    assert comp.get_object() == interx.get_object()
+
+
+@then("computation {comp}.point = point({x}, {y}, {z})")
+def step_impl(context, comp, x, y, z):
+    comp = getattr(context, comp)
+    x = float(x)
+    y = float(y)
+    z = float(z)
+    assert comp.get_point() == tuples.Point(x, y, z)
+
+
+@then("computation {comp}.eyev = vector({x}, {y}, {z})")
+def step_impl(context, comp, x, y, z):
+    comp = getattr(context, comp)
+    x = float(x)
+    y = float(y)
+    z = float(z)
+    assert comp.get_eye_vector() == tuples.Vector(x, y, z)
+
+
+@then("computation {comp}.normalv = vector({x}, {y}, {z})")
+def step_impl(context, comp, x, y, z):
+    comp = getattr(context, comp)
+    x = float(x)
+    y = float(y)
+    z = float(z)
+    assert comp.get_normal_vector() == tuples.Vector(x, y, z)
+
+
+@then("computation {comp}.inside = {inside}")
+def step_impl(context, comp, inside):
+    comp = getattr(context, comp)
+    if inside.lower() == "true":
+        inside = True
+    else:
+        inside = False
+    assert comp.is_inside() == inside
