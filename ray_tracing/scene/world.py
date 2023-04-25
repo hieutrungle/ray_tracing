@@ -58,10 +58,9 @@ class World:
         """
         Intersects the world with a ray
         """
-        intersections = []
+        intersections = intersection.Intersections()
         for obj in self.objects:
             intersections += obj.intersect(ray)
-        intersections.sort(key=lambda x: x.t)
         return intersections
 
     def shade_hit(self, comps, remaining=5):
@@ -249,5 +248,3 @@ class DefaultWorld(World):
                 intensity=tuples.Color(1, 1, 1),
             )
         ]
-
-    

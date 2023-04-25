@@ -51,3 +51,16 @@ def step_impl(context, w, obj):
     w = getattr(context, w)
     obj = getattr(context, obj)
     assert w.contains_object(obj)
+
+
+# intersect world
+@given("world {w} ← default_world()")
+def step_impl(context, w):
+    setattr(context, w, world.DefaultWorld())
+
+
+@when("world {xs} ← intersect_world({w}, {r})")
+def step_impl(context, xs, w, r):
+    w = getattr(context, w)
+    r = getattr(context, r)
+    setattr(context, xs, w.intersect_world(r))

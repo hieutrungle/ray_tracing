@@ -91,6 +91,12 @@ class Intersections:
         """
         return len(self.intersections)
 
+    def __add__(self, other):
+        """
+        Returns the union of the two collections.
+        """
+        return Intersections(*self.intersections, *other.intersections)
+
     def hit(self):
         """
         Returns the first intersection with a positive t value.
@@ -115,6 +121,13 @@ class Intersections:
         Adds the given intersection to the collection.
         """
         self.intersections.append(intersection)
+        self.hit()
+
+    def add_all(self, *intersections: List[Intersection]):
+        """
+        Adds the given intersections to the collection.
+        """
+        self.intersections.extend(intersections)
         self.hit()
 
     def sort(self):
