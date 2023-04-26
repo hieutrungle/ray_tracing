@@ -9,3 +9,10 @@ Feature: Matrices and Determinants
         And camera c.vsize = 120
         And camera c.field_of_view = 1.5707963267948966
         And camera c.transform = identity_matrix
+
+    Scenario: The pixel size for a horizontal canvas
+        Given camera c ← camera(200, 125, 1.5707963267948966)
+        Then camera c.pixel_size = 0.01
+    Scenario: The pixel size for a vertical canvas
+        Given camera c ← camera(125, 200, 1.5707963267948966)
+        Then camera c.pixel_size = 0.01

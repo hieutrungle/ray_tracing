@@ -58,3 +58,12 @@ def step_impl(context, c, field_of_view):
 @then("camera {c}.transform = identity_matrix")
 def step_impl(context, c):
     assert getattr(context, c).transform == matrix.IdentityMatrix()
+
+
+# pixel size of camera
+# @given("camera {c} ← camera({hsize}, {vsize}, {field_of_view})")
+# def step_impl(context, c, hsize, vsize, field_of_view):
+#     hsize = int(hsize)
+#     vsize = int(vsize)
+#     field_of_view = float(field_of_view)
+#     setattr(context, c, camera.Camera(hsize, vsize, field_of_view))
