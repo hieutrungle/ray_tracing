@@ -37,6 +37,9 @@ test_reflection:
 test_world:
 	behave -i ./features/world.feature
 
+test_camera:
+	behave -i ./features/camera.feature
+
 clean:
 	rm -rf __pycache__
 
