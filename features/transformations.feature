@@ -102,3 +102,33 @@ Feature: Transformation
         And transformation C ← translation(10, 5, 7)
         When transformation T ← C * B * A
         Then transformation T * p = point(15, 0, 7)
+
+    # Chapter 7: Making a Scene
+    Scenario: The transformation matrix for the default orientation
+        Given point from ← point(0, 0, 0)
+        And point to ← point(0, 0, -1)
+        And vector up ← vector(0, 1, 0)
+        When transformation t ← view_transform(from, to, up)
+        Then matrix t = identity_matrix
+    Scenario: A view transformation matrix looking in positive z direction
+        Given point from ← point(0, 0, 0)
+        And point to ← point(0, 0, 1)
+        And vector up ← vector(0, 1, 0)
+        When transformation t ← view_transform(from, to, up)
+        Then matrix t = scaling(-1, 1, -1)
+    Scenario: The view transformation moves the world
+        Given point from ← point(0, 0, 8)
+        And point to ← point(0, 0, 0)
+        And vector up ← vector(0, 1, 0)
+        When transformation t ← view_transform(from, to, up)
+        Then matrix t = translation(0, 0, -8)
+    Scenario: An arbitrary view transformation
+        Given point from ← point(1, 3, 2)
+        And point to ← point(4, -2, 8)
+        And vector up ← vector(1, 1, 0)
+        When transformation t ← view_transform(from, to, up)
+        Then matrix t is the following 4x4 matrix:
+            | -0.50709 | 0.50709 | 0.67612  | -2.36643 |
+            | 0.76772  | 0.60609 | 0.12122  | -2.82843 |
+            | -0.35857 | 0.59761 | -0.71714 | 0.00000  |
+            | 0.00000  | 0.00000 | 0.00000  | 1.00000  |

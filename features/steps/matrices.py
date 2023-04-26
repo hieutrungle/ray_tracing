@@ -162,7 +162,7 @@ def step_impl(context, name1, name2):
 def step_impl(context, name):
     given_list = utils.matrix_text2list(context.table.headings, context.table.rows)
     m = matrix.Matrix(given_list)
-    assert getattr(context, name) == m
+    assert getattr(context, name).round_matrix(5) == m
 
 
 @then("inverse({name}) is the following 4x4 matrix")
@@ -205,3 +205,15 @@ def step_impl(context, name1, name2):
 def step_impl(context, name1, name2):
     m = getattr(context, name2).transpose().inverse().round_matrix(5)
     setattr(context, name1, m)
+
+
+@then("matrix {t} = scaling({x}, {y}, {z})")
+def step_impl(context, t, x, y, z):
+    m = matrix.ScalingMatrix(float(x), float(y), float(z))
+    assert getattr(context, t) == m
+
+
+@then("matrix {t} = translation({x}, {y}, {z})")
+def step_impl(context, t, x, y, z):
+    m = matrix.TranslationMatrix(float(x), float(y), float(z))
+    assert getattr(context, t) == m

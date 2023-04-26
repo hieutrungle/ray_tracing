@@ -8,6 +8,7 @@ sys.path.insert(0, package_path)
 
 import ray_tracing.elements.matrix as matrix
 import ray_tracing.elements.tuples as tuples
+import ray_tracing.scene.camera as camera
 from ray_tracing.utils.constants import *
 import ray_tracing.utils.utils as utils
 from behave import given, when, then
@@ -127,3 +128,15 @@ def step_impl(context, transform1, transform2, transform3, transform4):
         * getattr(context, transform2)
     )
     setattr(context, transform1, results)
+
+
+# View transformation matrix
+@when(
+    "transformation {transform} ← view_transform({from_point}, {to_point}, {up_vector})"
+)
+def step_impl(context, transform, from_point, to_point, up_vector):
+    from_point = getattr(context, from_point)
+    to_point = getattr(context, to_point)
+    up_vector = getattr(context, up_vector)
+    results = camera.view_transform(from_point, to_point, up_vector)
+    setattr(context, transform, results)

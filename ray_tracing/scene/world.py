@@ -1,5 +1,5 @@
 """
-This module contains the Material class
+This module contains the World class
 """
 
 import os
