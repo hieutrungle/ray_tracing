@@ -4,11 +4,8 @@ import sys
 package_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, package_path)
 
-import math
 from .constants import *
 import ray_tracing.elements.tuples as tuples
-import ray_tracing.elements.materials as materials
-import ray_tracing.elements.matrix as matrix
 
 
 def equal(a, b):
@@ -57,6 +54,7 @@ def list_to_material(given_list):
     """
     Converts a list to a material.
     """
+    import ray_tracing.elements.materials as materials
 
     material_properties = {}
 
@@ -86,6 +84,8 @@ def list_to_transform(given_list):
     """
     Converts a list to a transform.
     """
+    import ray_tracing.elements.matrix as matrix
+
     transform = matrix.IdentityMatrix()
     for row in given_list:
         if row[0].lower().find("transform") != -1:
