@@ -65,11 +65,23 @@ class Shape:
         """
         self.transform = transform
 
+    def get_transform(self):
+        """
+        Returns the transform of the shape.
+        """
+        return self.transform
+
     def set_material(self, material):
         """
         Sets the material of the shape.
         """
         self.material = material
+
+    def get_material(self):
+        """
+        Returns the material of the shape.
+        """
+        return self.material
 
     def translate(self, x, y, z):
         """

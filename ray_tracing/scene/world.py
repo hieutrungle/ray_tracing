@@ -8,6 +8,7 @@ import sys
 package_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, package_path)
 
+from typing import List, Union
 import numpy as np
 import math
 from ray_tracing.utils.constants import *
@@ -42,19 +43,30 @@ class World:
         """
         return len(self.lights)
 
-    def add_object(self, obj):
+    def add_object(self, obj: shape.Shape):
         """
         Adds an object to the world
         """
         self.objects.append(obj)
 
-    def add_light(self, light):
+    def replace_lights(self, new_lights: Union[List[lights.Light], lights.Light]):
+        """
+        Replaces the lights in the world
+        """
+        if isinstance(new_lights, lights.Light):
+            self.lights = [new_lights]
+        elif isinstance(new_lights, list):
+            self.lights = new_lights
+        else:
+            raise TypeError("Invalid type for lights")
+
+    def add_light(self, light: lights.Light):
         """
         Adds a light to the world
         """
         self.lights.append(light)
 
-    def intersect_world(self, ray):
+    def intersect_world(self, ray: rays.Ray) -> intersection.Intersections:
         """
         Intersects the world with a ray
         """
@@ -63,56 +75,65 @@ class World:
             intersections += obj.intersect(ray)
         return intersections
 
-    def shade_hit(self, comps, remaining=5):
+    def shade_hit(
+        self, comps: intersection.IntersectionComputations, remaining: int = 5
+    ):
         """
         Shades a hit with the world
         """
-        shadowed = self.is_shadowed(comps.over_point)
-        surface = comps.object.material.lighting(
-            comps.object,
-            self.lights,
-            comps.over_point,
-            comps.eyev,
-            comps.normalv,
-            shadowed,
-        )
-        reflected = self.reflected_color(comps, remaining)
-        refracted = self.refracted_color(comps, remaining)
-        material = comps.object.material
-        if material.reflective > 0 and material.transparency > 0:
-            reflectance = comps.schlick()
-            return surface + reflected * reflectance + refracted * (1 - reflectance)
-        else:
-            return surface + reflected + refracted
+        # shadowed = self.is_shadowed(comps.point)
+        surface = BLACK
+        for light in self.lights:
+            surface += comps.get_object().material.lighting(
+                light,
+                comps.get_point(),
+                comps.get_eye_vector(),
+                comps.get_normal_vector(),
+            )
+        # reflected = self.reflected_color(comps, remaining)
+        # refracted = self.refracted_color(comps, remaining)
+        # material = comps.object.material
+        # if material.reflective > 0 and material.transparency > 0:
+        #     reflectance = comps.schlick()
+        #     return surface + reflected * reflectance + refracted * (1 - reflectance)
+        # else:
+        #     return surface + reflected + refracted
+        return surface
 
-    def color_at(self, ray, remaining=5):
+    def color_at(self, ray: rays.Ray, remaining: int = 5):
         """
         Returns the color at a ray
         """
         intersections = self.intersect_world(ray)
-        hit = intersection.hit(intersections)
+        hit = intersections.get_first_hit()
         if hit is None:
             return BLACK
         else:
             comps = hit.prepare_computations(ray)
             return self.shade_hit(comps, remaining)
 
-    def is_shadowed(self, point):
+    def is_shadowed(self, point: tuples.Point):
         """
         Checks if a point is shadowed
         """
         v = self.lights[0].position - point
-        distance = np.linalg.norm(v)
+        distance = v.magnitude()
         direction = v / distance
         r = rays.Ray(point, direction)
         intersections = self.intersect_world(r)
-        hit = intersection.hit(intersections)
-        if hit is not None and hit.t < distance:
+        print(f"intersections: {intersections}")
+        if (
+            intersections is not None
+            and intersections.get_first_hit() is not None
+            and intersections.get_first_hit().get_t() < distance
+        ):
             return True
         else:
             return False
 
-    def reflected_color(self, comps, remaining=5):
+    def reflected_color(
+        self, comps: intersection.IntersectionComputations, remaining: int = 5
+    ):
         """
         Returns the reflected color
         """
@@ -210,13 +231,13 @@ class World:
         self.lights += other.lights
         return self
 
-    def contains_object(self, obj):
+    def contains_object(self, obj: shape.Shape):
         """
         Checks if the world contains an object
         """
         return obj in self.objects
 
-    def contains_light(self, light):
+    def contains_light(self, light: lights.Light):
         """
         Checks if the world contains a light
         """
