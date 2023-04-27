@@ -58,6 +58,13 @@ def step_impl(context, x, y):
     assert context.can.pixel_at(int(x), int(y)) == context.red
 
 
+@then("pixel_at({can}, {x}, {y}) = color({r}, {g}, {b})")
+def step_impl(context, can, x, y, r, g, b):
+    canvas_pixel = getattr(context, can).pixel_at(int(x), int(y))
+    print(f"canvas_pixel: {canvas_pixel}")
+    assert canvas_pixel == canvas.Color(float(r), float(g), float(b))
+
+
 @then("lines {start}-{stop} of ppm are")
 def step_impl(context, start, stop):
     start = int(start) - 1

@@ -39,7 +39,9 @@ def step_impl(context, name, x1, y1, z1, x2, y2, z2):
     x2 = float(x2)
     y2 = float(y2)
     z2 = float(z2)
-    setattr(context, name, rays.Ray(tuples.Point(x1, y1, z1), tuples.Vector(x2, y2, z2)))
+    setattr(
+        context, name, rays.Ray(tuples.Point(x1, y1, z1), tuples.Vector(x2, y2, z2))
+    )
 
 
 @then("ray position({name}, {t}) = point({x}, {y}, {z})")
