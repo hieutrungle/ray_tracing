@@ -69,21 +69,33 @@ def step_impl(context, m):
 
 
 # lighting
+@given("material lighting {in_shadow} ← {bool_value}")
+def step_impl(context, in_shadow, bool_value):
+    if bool_value.lower().find("true") != -1:
+        bool_value = True
+    elif bool_value.lower().find("false") != -1:
+        bool_value = False
+    else:
+        raise ValueError("bool_value must be true or false")
+    setattr(context, in_shadow, bool_value)
+
+
 @when(
-    "material lighting {result} ← lighting({material}, {light}, {position}, {eyev}, {normalv})"
+    "material lighting {result} ← lighting({material}, {light}, {position}, {eyev}, {normalv}, {in_shadow})"
 )
-def step_impl(context, result, material, light, position, eyev, normalv):
+def step_impl(context, result, material, light, position, eyev, normalv, in_shadow):
     material = getattr(context, material)
     light = getattr(context, light)
     position = getattr(context, position)
     eyev = getattr(context, eyev)
     normalv = getattr(context, normalv)
+    in_shadow = getattr(context, in_shadow)
     print(f"material: {material}")
     print(f"light: {light}")
     print(f"position: {position}")
     print(f"eyev: {eyev}")
     print(f"normalv: {normalv}")
-    lighting_effect = material.lighting(light, position, eyev, normalv)
+    lighting_effect = material.lighting(light, position, eyev, normalv, in_shadow)
     print(f"lighting_effect: {lighting_effect}")
     setattr(
         context,

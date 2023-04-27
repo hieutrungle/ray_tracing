@@ -19,7 +19,8 @@ Feature: Materials
         And light intensity ← color(1, 1, 1)
         And light light_position ← point(0, 0, -10)
         And light light ← point_light(light_position, intensity)
-        When material lighting result ← lighting(m, light, position, eyev, normalv)
+        And material lighting in_shadow ← false
+        When material lighting result ← lighting(m, light, position, eyev, normalv, in_shadow)
         Then material lighting result = color(1.9, 1.9, 1.9)
 
     Scenario: Lighting with the eye between light and surface, eye offset 45°
@@ -28,7 +29,8 @@ Feature: Materials
         And light intensity ← color(1, 1, 1)
         And light light_position ← point(0, 0, -10)
         And light light ← point_light(light_position, intensity)
-        When material lighting result ← lighting(m, light, position, eyev, normalv)
+        And material lighting in_shadow ← false
+        When material lighting result ← lighting(m, light, position, eyev, normalv, in_shadow)
         Then material lighting result = color(1.0, 1.0, 1.0)
 
     Scenario: Lighting with eye opposite surface, light offset 45°
@@ -37,7 +39,8 @@ Feature: Materials
         And light intensity ← color(1, 1, 1)
         And light light_position ← point(0, 10, -10)
         And light light ← point_light(light_position, intensity)
-        When material lighting result ← lighting(m, light, position, eyev, normalv)
+        And material lighting in_shadow ← false
+        When material lighting result ← lighting(m, light, position, eyev, normalv, in_shadow)
         Then material lighting result = color(0.7364, 0.7364, 0.7364)
 
     Scenario: Lighting with eye in the path of the reflection vector
@@ -46,7 +49,8 @@ Feature: Materials
         And light intensity ← color(1, 1, 1)
         And light light_position ← point(0, 10, -10)
         And light light ← point_light(light_position, intensity)
-        When material lighting result ← lighting(m, light, position, eyev, normalv)
+        And material lighting in_shadow ← false
+        When material lighting result ← lighting(m, light, position, eyev, normalv, in_shadow)
         Then material lighting result = color(1.6364, 1.6364, 1.6364)
 
     Scenario: Lighting with the light behind the surface
@@ -55,5 +59,16 @@ Feature: Materials
         And light intensity ← color(1, 1, 1)
         And light light_position ← point(0, 0, -10)
         And light light ← point_light(light_position, intensity)
-        When material lighting result ← lighting(m, light, position, eyev, normalv)
+        And material lighting in_shadow ← false
+        When material lighting result ← lighting(m, light, position, eyev, normalv, in_shadow)
+        Then material lighting result = color(0.1, 0.1, 0.1)
+
+    Scenario: Lighting with the surface in shadow
+        Given vector eyev ← vector(0, 0, -1)
+        And vector normalv ← vector(0, 0, -1)
+        And light intensity ← color(1, 1, 1)
+        And light light_position ← point(0, 0, -10)
+        And light light ← point_light(light_position, intensity)
+        And material lighting in_shadow ← true
+        When material lighting result ← lighting(m, light, position, eyev, normalv, in_shadow)
         Then material lighting result = color(0.1, 0.1, 0.1)
