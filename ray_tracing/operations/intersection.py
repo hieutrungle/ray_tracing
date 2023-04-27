@@ -1,24 +1,21 @@
 """
 This module contains the ShapeObject class.
 """
-
+from __future__ import annotations
 import os
 import sys
 
 package_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, package_path)
 
-import numpy as np
-import math
 from ray_tracing.utils.constants import *
-
-# import ray_tracing.elements.shape as shapeobject
 import ray_tracing.elements.tuples as tuples
 import ray_tracing.elements.rays as rays
-import ray_tracing.elements.materials as materials
-
-import ray_tracing.utils.utils as utils
 from typing import List
+import typing
+
+if typing.TYPE_CHECKING:
+    import ray_tracing.elements.shapes as shapes
 
 
 class IntersectionComputations:
@@ -88,7 +85,7 @@ class Intersection:
     This class represents an intersection between a ray and a shape.
     """
 
-    def __init__(self, t: float, shape):
+    def __init__(self, t: float, shape: shapes.Shape):
         """
         Constructor for the Intersection class.
         """

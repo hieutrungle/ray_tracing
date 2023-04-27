@@ -18,7 +18,6 @@ import ray_tracing.elements.rays as rays
 import ray_tracing.elements.lights as lights
 import ray_tracing.elements.materials as materials
 import ray_tracing.elements.shapes as shapes
-import typing
 import ray_tracing.operations.intersection as intersection
 
 

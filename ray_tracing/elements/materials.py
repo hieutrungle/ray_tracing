@@ -10,10 +10,6 @@ sys.path.insert(0, package_path)
 
 from ray_tracing.utils.constants import *
 import ray_tracing.elements.tuples as tuples
-import typing
-
-if typing.TYPE_CHECKING:
-    import ray_tracing.elements.lights as lights
 
 
 class Material:
