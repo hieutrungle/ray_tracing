@@ -6,7 +6,7 @@ package_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 package_path = os.path.abspath(os.path.join(package_path, ".."))
 sys.path.insert(0, package_path)
 
-import ray_tracing.elements.shape as shape
+import ray_tracing.elements.shapes as shapes
 import ray_tracing.elements.matrix as matrix
 import ray_tracing.elements.tuples as tuples
 import ray_tracing.elements.lights as lights

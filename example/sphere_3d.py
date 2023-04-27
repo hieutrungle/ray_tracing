@@ -8,7 +8,7 @@ import math
 import ray_tracing
 from ray_tracing.elements.tuples import Point, Vector, Color
 from ray_tracing.elements.canvas import Canvas
-from ray_tracing.elements.shape import Sphere
+from ray_tracing.elements.shapes import Sphere
 from ray_tracing.elements.rays import Ray
 from ray_tracing.elements.lights import PointLight
 import ray_tracing.elements.matrix as matrix

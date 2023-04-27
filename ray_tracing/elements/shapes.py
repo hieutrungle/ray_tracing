@@ -131,13 +131,17 @@ class Shape:
         """
         Intersects the shape with the given ray.
         """
-        raise NotImplementedError("local_intersect not implemented.")
+        self.saved_ray = ray
+        print(f"local_intersect not implemented.")
+        # raise NotImplementedError("local_intersect not implemented.")
 
     def local_normal_at(self, point: tuples.Point):
         """
         Returns the normal of the shape at the given point.
         """
-        raise NotImplementedError("local_normal_at not implemented.")
+        print("local_normal_at not implemented.")
+        #point to vector
+        return tuples.Vector(point.x(), point.y(), point.z())
 
     def intersect(self, ray: rays.Ray):
         """

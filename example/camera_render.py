@@ -8,7 +8,7 @@ import math
 import ray_tracing.elements.tuples as tuples
 import ray_tracing.scene.camera as camera
 import ray_tracing.scene.world as world
-import ray_tracing.elements.shape as shape
+import ray_tracing.elements.shapes as shapes
 import ray_tracing.elements.lights as lights
 import ray_tracing.elements.materials as materials
 import ray_tracing.elements.matrix as matrix
@@ -16,11 +16,11 @@ import ray_tracing.elements as elements
 
 
 def main():
-    floor = shape.Sphere()
+    floor = shapes.Sphere()
     floor.transform = matrix.ScalingMatrix(10, 0.01, 10)
     floor.material = materials.Material(color=tuples.Color(1, 0.9, 0.9), specular=0)
 
-    left_wall = shape.Sphere()
+    left_wall = shapes.Sphere()
     left_wall.transform = (
         matrix.TranslationMatrix(0, 0, 5)
         * matrix.RotationYMatrix(-math.pi / 4)
@@ -29,7 +29,7 @@ def main():
     )
     left_wall.material = floor.material
 
-    right_wall = shape.Sphere()
+    right_wall = shapes.Sphere()
     right_wall.transform = (
         matrix.TranslationMatrix(0, 0, 5)
         * matrix.RotationYMatrix(math.pi / 4)
@@ -38,13 +38,13 @@ def main():
     )
     right_wall.material = floor.material
 
-    middle = shape.Sphere()
+    middle = shapes.Sphere()
     middle.transform = matrix.TranslationMatrix(-0.5, 1, 0.5)
     middle.material = materials.Material(
         color=tuples.Color(0.1, 1, 0.5), diffuse=0.7, specular=0.3
     )
 
-    right = shape.Sphere()
+    right = shapes.Sphere()
     right.transform = matrix.TranslationMatrix(1.5, 0.5, -0.5) * matrix.ScalingMatrix(
         0.5, 0.5, 0.5
     )
@@ -52,7 +52,7 @@ def main():
         color=tuples.Color(0.5, 1, 0.1), diffuse=0.7, specular=0.3
     )
 
-    left = shape.Sphere()
+    left = shapes.Sphere()
     left.transform = matrix.TranslationMatrix(-1.5, 0.33, -0.75) * matrix.ScalingMatrix(
         0.33, 0.33, 0.33
     )

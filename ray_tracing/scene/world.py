@@ -17,7 +17,7 @@ import ray_tracing.elements.matrix as matrix
 import ray_tracing.elements.rays as rays
 import ray_tracing.elements.lights as lights
 import ray_tracing.elements.materials as materials
-import ray_tracing.elements.shape as shape
+import ray_tracing.elements.shapes as shapes
 import typing
 import ray_tracing.operations.intersection as intersection
 
@@ -103,11 +103,11 @@ class World:
         """
         return len(self.lights)
 
-    def add_object(self, obj: Union[shape.Shape, List[shape.Shape]]):
+    def add_object(self, obj: Union[shapes.Shape, List[shapes.Shape]]):
         """
         Adds an object to the world
         """
-        if isinstance(obj, shape.Shape):
+        if isinstance(obj, shapes.Shape):
             self.objects.append(obj)
         elif isinstance(obj, list):
             self.objects += obj
@@ -136,11 +136,11 @@ class World:
         else:
             raise TypeError("Invalid type for lights")
 
-    def replace_objects(self, new_objects: Union[List[shape.Shape], shape.Shape]):
+    def replace_objects(self, new_objects: Union[List[shapes.Shape], shapes.Shape]):
         """
         Replaces the objects in the world
         """
-        if isinstance(new_objects, shape.Shape):
+        if isinstance(new_objects, shapes.Shape):
             self.objects = [new_objects]
         elif isinstance(new_objects, list):
             self.objects = new_objects
@@ -253,7 +253,7 @@ class World:
         image = camera.render(self)
         return image
 
-    def contains_object(self, obj: shape.Shape):
+    def contains_object(self, obj: shapes.Shape):
         """
         Checks if the world contains an object
         """
@@ -274,14 +274,14 @@ class DefaultWorld(World):
     def __init__(self):
         super().__init__()
         self.objects = [
-            shape.Sphere(
+            shapes.Sphere(
                 material=materials.Material(
                     color=tuples.Color(0.8, 1.0, 0.6),
                     diffuse=0.7,
                     specular=0.2,
                 )
             ),
-            shape.Sphere(
+            shapes.Sphere(
                 transform=matrix.ScalingMatrix(0.5, 0.5, 0.5),
             ),
         ]
