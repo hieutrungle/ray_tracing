@@ -31,6 +31,66 @@ class World:
         self.objects = []
         self.lights = []
 
+    def __eq__(self, other):
+        return self.objects == other.objects and self.lights == other.lights
+
+    def __str__(self):
+        return "World(objects={}, lights={})".format(self.objects, self.lights)
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __hash__(self):
+        return hash((self.objects, self.lights))
+
+    def __copy__(self):
+        return World(self.objects, self.lights)
+
+    def __deepcopy__(self, memo):
+        return World(self.objects, self.lights)
+
+    def __getstate__(self):
+        return (self.objects, self.lights)
+
+    def __setstate__(self, state):
+        self.objects, self.lights = state
+
+    def __len__(self):
+        return len(self.objects) + len(self.lights)
+
+    def __iter__(self):
+        return iter(self.objects + self.lights)
+
+    def __getitem__(self, key):
+        return (
+            self.objects[key]
+            if key < len(self.objects)
+            else self.lights[key - len(self.objects)]
+        )
+
+    def __setitem__(self, key, value):
+        if key < len(self.objects):
+            self.objects[key] = value
+        else:
+            self.lights[key - len(self.objects)] = value
+
+    def __delitem__(self, key):
+        if key < len(self.objects):
+            del self.objects[key]
+        else:
+            del self.lights[key - len(self.objects)]
+
+    def __contains__(self, item):
+        return item in self.objects or item in self.lights
+
+    def __add__(self, other):
+        return World(self.objects + other.objects, self.lights + other.lights)
+
+    def __iadd__(self, other):
+        self.objects += other.objects
+        self.lights += other.lights
+        return self
+
     def num_objects(self):
         """
         Returns the number of objects in the world
@@ -105,8 +165,14 @@ class World:
         # shadowed = self.is_shadowed(comps.point)
         surface = BLACK
         for light in self.lights:
-            surface += comps.get_object().material.lighting(
-                light,
+            # surface += comps.get_object().material.lighting(
+            #     light,
+            #     comps.get_point(),
+            #     comps.get_eye_vector(),
+            #     comps.get_normal_vector(),
+            # )
+            surface += light.lighting(
+                comps.get_object().material,
                 comps.get_point(),
                 comps.get_eye_vector(),
                 comps.get_normal_vector(),
@@ -137,12 +203,12 @@ class World:
         """
         Checks if a point is shadowed
         """
+        # checking for the first light only
         v = self.lights[0].position - point
         distance = v.magnitude()
         direction = v / distance
         r = rays.Ray(point, direction)
         intersections = self.intersect_world(r)
-        print(f"intersections: {intersections}")
         if (
             intersections is not None
             and intersections.get_first_hit() is not None
@@ -191,66 +257,6 @@ class World:
         """
         image = camera.render(self)
         return image
-
-    def __eq__(self, other):
-        return self.objects == other.objects and self.lights == other.lights
-
-    def __str__(self):
-        return "World(objects={}, lights={})".format(self.objects, self.lights)
-
-    def __repr__(self):
-        return self.__str__()
-
-    def __hash__(self):
-        return hash((self.objects, self.lights))
-
-    def __copy__(self):
-        return World(self.objects, self.lights)
-
-    def __deepcopy__(self, memo):
-        return World(self.objects, self.lights)
-
-    def __getstate__(self):
-        return (self.objects, self.lights)
-
-    def __setstate__(self, state):
-        self.objects, self.lights = state
-
-    def __len__(self):
-        return len(self.objects) + len(self.lights)
-
-    def __iter__(self):
-        return iter(self.objects + self.lights)
-
-    def __getitem__(self, key):
-        return (
-            self.objects[key]
-            if key < len(self.objects)
-            else self.lights[key - len(self.objects)]
-        )
-
-    def __setitem__(self, key, value):
-        if key < len(self.objects):
-            self.objects[key] = value
-        else:
-            self.lights[key - len(self.objects)] = value
-
-    def __delitem__(self, key):
-        if key < len(self.objects):
-            del self.objects[key]
-        else:
-            del self.lights[key - len(self.objects)]
-
-    def __contains__(self, item):
-        return item in self.objects or item in self.lights
-
-    def __add__(self, other):
-        return World(self.objects + other.objects, self.lights + other.lights)
-
-    def __iadd__(self, other):
-        self.objects += other.objects
-        self.lights += other.lights
-        return self
 
     def contains_object(self, obj: shape.Shape):
         """

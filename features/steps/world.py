@@ -120,3 +120,12 @@ def step_impl(context, c, obj):
     c = getattr(context, c)
     obj = getattr(context, obj)
     assert c == obj.get_material().color
+
+
+# shadows
+@then("world is_shadowed({w}, {p}) is {is_shadowed}")
+def step_impl(context, w, p, is_shadowed):
+    w = getattr(context, w)
+    p = getattr(context, p)
+    is_shadowed = utils.str_to_bool(is_shadowed)
+    assert w.is_shadowed(p) == is_shadowed

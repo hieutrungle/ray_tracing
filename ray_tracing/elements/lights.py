@@ -45,7 +45,7 @@ class Light:
 
     def lighting(
         self,
-        shape_object,
+        material,
         point: tuples.Point,
         eye_vector: tuples.Vector,
         normal_vector: tuples.Vector,
@@ -54,47 +54,43 @@ class Light:
         """
         Calculates the lighting at the given point.
         """
-        if isinstance(shape_object.material, materials.Material):
-            color = shape_object.material.color
-            ambient = color * self.intensity
+        resulting_color = BLACK
+        if isinstance(material, materials.Material):
+            # combine the surface color with the light's color/intensity by hadamard multiplication
+            effective_color = material.color * self.intensity
+            # compute the ambient contribution
+            ambient = effective_color * material.ambient
+
             if in_shadow:
-                return ambient
-
-            light_vector = (self.position - point).normalize()
-            light_dot_normal = light_vector.dot(normal_vector)
-            if light_dot_normal < 0:
-                diffuse = BLACK
-                specular = BLACK
+                resulting_color = ambient
             else:
-                diffuse = color * self.intensity * light_dot_normal
-
-                reflect_vector = (-light_vector).reflect(normal_vector)
-                reflect_dot_eye = reflect_vector.dot(eye_vector)
-                if reflect_dot_eye <= 0:
+                # find the direction to the light source
+                light_vector = (self.position - point).normalize()
+                # light_dot_normal represents the cosine of the angle between the
+                # light vector and the normal vector. A negative number means the
+                # light is on the other side of the surface.
+                light_dot_normal = light_vector.dot(normal_vector)
+                if light_dot_normal < 0:
+                    diffuse = BLACK
                     specular = BLACK
                 else:
-                    factor = math.pow(reflect_dot_eye, shape_object.material.shininess)
-                    specular = self.intensity * shape_object.material.specular * factor
+                    # compute the diffuse contribution
+                    diffuse = effective_color * material.diffuse * light_dot_normal
 
-            return ambient + diffuse + specular
-        else:
-            return BLACK
+                    # reflect_dot_eye represents the cosine of the angle between the
+                    # reflection vector and the eye vector. A negative number means the
+                    # light reflects away from the eye.
+                    reflect_vector = (-light_vector).reflect(normal_vector)
+                    reflect_dot_eye = reflect_vector.dot(eye_vector)
+                    if reflect_dot_eye <= 0:
+                        specular = BLACK
+                    else:
+                        # compute the specular contribution
+                        factor = reflect_dot_eye**material.shininess
+                        specular = self.intensity * material.specular * factor
+                resulting_color = ambient + diffuse + specular
 
-    def is_shadowed(self, world, point: tuples.Point):
-        """
-        Checks if the point is in shadow.
-        """
-        v = self.position - point
-        distance = v.magnitude()
-        direction = v.normalize()
-
-        r = rays.Ray(point, direction)
-        intersections = world.intersect(r)
-        hit = intersections.hit()
-        if hit is not None and hit.t < distance:
-            return True
-        else:
-            return False
+        return resulting_color
 
 
 class PointLight(Light):

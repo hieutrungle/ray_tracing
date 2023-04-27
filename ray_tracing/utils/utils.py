@@ -117,3 +117,13 @@ def list_to_transform(given_list):
                 transform = operation * transform
 
     return transform
+
+
+def str_to_bool(is_shadowed: str) -> bool:
+    if is_shadowed.lower().find("true") != -1:
+        is_shadowed = True
+    elif is_shadowed.lower().find("false") != -1:
+        is_shadowed = False
+    else:
+        raise ValueError("is_shadowed must be true or false")
+    return is_shadowed
