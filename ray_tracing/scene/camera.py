@@ -1,7 +1,7 @@
 """
 This module contains the Camera class
 """
-
+from __future__ import annotations
 import os
 import sys
 
@@ -14,12 +14,6 @@ import ray_tracing.elements.tuples as tuples
 import ray_tracing.elements.matrix as matrix
 import ray_tracing.elements.rays as rays
 import ray_tracing.elements.canvas as canvas
-
-# import ray_tracing.elements.lights as lights
-# import ray_tracing.elements.materials as materials
-# import ray_tracing.elements.shape as shape
-# import ray_tracing.operations.intersection as intersection
-# import ray_tracing.utils.utils as utils
 
 
 def view_transform(

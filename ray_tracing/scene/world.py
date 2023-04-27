@@ -1,7 +1,7 @@
 """
 This module contains the World class
 """
-
+from __future__ import annotations
 import os
 import sys
 
@@ -18,8 +18,8 @@ import ray_tracing.elements.rays as rays
 import ray_tracing.elements.lights as lights
 import ray_tracing.elements.materials as materials
 import ray_tracing.elements.shape as shape
+import typing
 import ray_tracing.operations.intersection as intersection
-import ray_tracing.utils.utils as utils
 
 
 class World:
@@ -43,11 +43,27 @@ class World:
         """
         return len(self.lights)
 
-    def add_object(self, obj: shape.Shape):
+    def add_object(self, obj: Union[shape.Shape, List[shape.Shape]]):
         """
         Adds an object to the world
         """
-        self.objects.append(obj)
+        if isinstance(obj, shape.Shape):
+            self.objects.append(obj)
+        elif isinstance(obj, list):
+            self.objects += obj
+        else:
+            raise TypeError("Invalid type for object")
+
+    def add_light(self, light: Union[lights.Light, List[lights.Light]]):
+        """
+        Adds a light to the world
+        """
+        if isinstance(light, lights.Light):
+            self.lights.append(light)
+        elif isinstance(light, list):
+            self.lights += light
+        else:
+            raise TypeError("Invalid type for light")
 
     def replace_lights(self, new_lights: Union[List[lights.Light], lights.Light]):
         """
@@ -60,11 +76,16 @@ class World:
         else:
             raise TypeError("Invalid type for lights")
 
-    def add_light(self, light: lights.Light):
+    def replace_objects(self, new_objects: Union[List[shape.Shape], shape.Shape]):
         """
-        Adds a light to the world
+        Replaces the objects in the world
         """
-        self.lights.append(light)
+        if isinstance(new_objects, shape.Shape):
+            self.objects = [new_objects]
+        elif isinstance(new_objects, list):
+            self.objects = new_objects
+        else:
+            raise TypeError("Invalid type for objects")
 
     def intersect_world(self, ray: rays.Ray) -> intersection.Intersections:
         """

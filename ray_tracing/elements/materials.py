@@ -1,22 +1,19 @@
 """
 This module contains the Material class
 """
-
+from __future__ import annotations
 import os
 import sys
 
 package_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, package_path)
 
-import numpy as np
-import math
 from ray_tracing.utils.constants import *
 import ray_tracing.elements.tuples as tuples
-import ray_tracing.elements.matrix as matrix
-import ray_tracing.elements.rays as rays
-import ray_tracing.elements.lights as lights
-import ray_tracing.operations.intersection as intersection
-import ray_tracing.utils.utils as utils
+import typing
+
+if typing.TYPE_CHECKING:
+    import ray_tracing.elements.lights as lights
 
 
 class Material:
