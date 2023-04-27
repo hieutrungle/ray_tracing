@@ -1,4 +1,4 @@
-Feature: Spheres
+Feature: Planes
 
     # plane
     Scenario: The normal of a plane is constant everywhere
