@@ -1,6 +1,5 @@
 import os
 import sys
-import math
 
 package_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 package_path = os.path.abspath(os.path.join(package_path, ".."))

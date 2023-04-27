@@ -140,7 +140,7 @@ class Shape:
         Returns the normal of the shape at the given point.
         """
         print("local_normal_at not implemented.")
-        #point to vector
+        # point to vector
         return tuples.Vector(point.x(), point.y(), point.z())
 
     def intersect(self, ray: rays.Ray):
@@ -221,3 +221,39 @@ class Sphere(Shape):
         Returns the normal of the sphere at the given point.
         """
         return point - tuples.Point(0, 0, 0)
+
+
+class Plane(Shape):
+    """
+    This class represents a plane in 3D space.
+    """
+
+    def __init__(
+        self,
+        transform=matrix.IdentityMatrix(4),
+        material=materials.Material(),
+        id=None,
+    ):
+        """
+        Constructor for the Plane class.
+        """
+        super().__init__(id=id, transform=transform, material=material)
+
+    def __repr__(self):
+        return f"Plane(id={self.id}, transform=\n{self.transform}, material={self.material})"
+
+    def local_intersect(self, ray: rays.Ray):
+        """
+        Intersects the plane with the given ray.
+        """
+        if abs(ray.direction.y()) < EPSILON:
+            return intersection.Intersections()
+
+        t = -ray.origin.y() / ray.direction.y()
+        return intersection.Intersections(intersection.Intersection(t, self))
+
+    def local_normal_at(self, point: tuples.Point):
+        """
+        Returns the normal of the plane at the given point.
+        """
+        return tuples.Vector(0, 1, 0)

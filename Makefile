@@ -22,6 +22,12 @@ test_rays:
 test_spheres:
 	behave -i ./features/spheres.feature
 
+test_shapes:
+	behave -i ./features/shapes.feature
+
+test_planes:
+	behave -i ./features/planes.feature
+
 test_intersections:
 	behave -i ./features/intersections.feature
 
