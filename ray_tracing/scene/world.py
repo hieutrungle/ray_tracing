@@ -164,12 +164,13 @@ class World:
         """
         surface = BLACK
         for light in self.lights:
+            in_shadow = self.is_shadowed(comps.over_point)
             surface += light.lighting(
                 comps.get_object().material,
                 comps.get_point(),
                 comps.get_eye_vector(),
                 comps.get_normal_vector(),
-                self.is_shadowed(comps.point),
+                in_shadow,
             )
         # reflected = self.reflected_color(comps, remaining)
         # refracted = self.refracted_color(comps, remaining)
@@ -200,7 +201,7 @@ class World:
         # checking for the first light only
         v = self.lights[0].position - point
         distance = v.magnitude()
-        direction = v / distance
+        direction = v.normalize()
         r = rays.Ray(point, direction)
         intersections = self.intersect_world(r)
         if (

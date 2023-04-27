@@ -162,3 +162,16 @@ def step_impl(context, comp, inside):
     else:
         inside = False
     assert comp.is_inside() == inside
+
+
+# over point intersection
+@then("computation {comp}.over_point.z < -EPSILON/2")
+def step_impl(context, comp):
+    comp = getattr(context, comp)
+    assert comp.over_point.z() < -EPSILON / 2
+
+
+@then("computation {comp}.point.z > {comp}.over_point.z")
+def step_impl(context, comp):
+    comp = getattr(context, comp)
+    assert comp.point.z() > comp.over_point.z()

@@ -102,3 +102,4 @@ Feature: World
         When computation comps ← prepare_computations(i, r)
         And world c ← shade_hit(w, comps)
         Then color c = color(0.1, 0.1, 0.1)
+

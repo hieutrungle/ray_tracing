@@ -41,6 +41,7 @@ class IntersectionComputations:
         self.t = t
         self.shape = shape
         self.point = point
+        self.over_point = point + normal_vector * EPSILON
         self.eye_vector = eye_vector
         self.normal_vector = normal_vector
         self.inside = inside
