@@ -129,3 +129,12 @@ def step_impl(context, w, p, is_shadowed):
     p = getattr(context, p)
     is_shadowed = utils.str_to_bool(is_shadowed)
     assert w.is_shadowed(p) == is_shadowed
+
+
+# render shadows
+@given("world {shape} is added to {w}")
+def step_impl(context, shape, w):
+    wor = getattr(context, w)
+    shape = getattr(context, shape)
+    wor.add_object(shape)
+    setattr(context, w, wor)

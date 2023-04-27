@@ -253,7 +253,9 @@ def step_impl(context, c, r, g, b):
     r = float(r)
     g = float(g)
     b = float(b)
-    assert getattr(context, c) == tuples.Color(r, g, b)
+    results = getattr(context, c)
+    print(results)
+    assert results == tuples.Color(r, g, b)
 
 
 # Adding colors

@@ -88,17 +88,17 @@ Feature: World
         And point p ← point(-2, 2, -2)
         Then world is_shadowed(w, p) is false
 
-# render shadows
-# Scenario: shade_hit() is given an intersection in shadow
-#     Given w ← world()
-#     And w.light ← point_light(point(0, 0, -10), color(1, 1, 1))
-#     And s1 ← sphere()
-#     And s1 is added to w
-#     And s2 ← sphere() with:
-#         | transform | translation(0, 0, 10) |
-#     And s2 is added to w
-#     And r ← ray(point(0, 0, 5), vector(0, 0, 1))
-#     And i ← intersection(4, s2)
-#     When comps ← prepare_computations(i, r)
-#     And c ← shade_hit(w, comps)
-#     Then c = color(0.1, 0.1, 0.1)
+    # render shadows
+    Scenario: shade_hit() is given an intersection in shadow
+        Given world w ← world()
+        And world w.light ← point_light(point(0, 0, -10), color(1, 1, 1))
+        And sphere s1 ← sphere()
+        And world s1 is added to w
+        And sphere s2 ← sphere() with:
+            | transform | translation(0, 0, 10) |
+        And world s2 is added to w
+        And ray r ← ray(point(0, 0, 5), vector(0, 0, 1))
+        And intersection i ← intersection(4, s2)
+        When computation comps ← prepare_computations(i, r)
+        And world c ← shade_hit(w, comps)
+        Then color c = color(0.1, 0.1, 0.1)

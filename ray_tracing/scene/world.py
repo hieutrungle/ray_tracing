@@ -162,20 +162,14 @@ class World:
         """
         Shades a hit with the world
         """
-        # shadowed = self.is_shadowed(comps.point)
         surface = BLACK
         for light in self.lights:
-            # surface += comps.get_object().material.lighting(
-            #     light,
-            #     comps.get_point(),
-            #     comps.get_eye_vector(),
-            #     comps.get_normal_vector(),
-            # )
             surface += light.lighting(
                 comps.get_object().material,
                 comps.get_point(),
                 comps.get_eye_vector(),
                 comps.get_normal_vector(),
+                self.is_shadowed(comps.point),
             )
         # reflected = self.reflected_color(comps, remaining)
         # refracted = self.refracted_color(comps, remaining)
